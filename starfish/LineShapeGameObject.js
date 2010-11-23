@@ -4,7 +4,7 @@ var LineShapeGameObject = function() {
 
   this.time = 0;
   this.totalTime = 2;
-  this.ratio = 0;
+  this.ratio = 1;
   this.dir = 'down';
 
   this.boundingBox = null;

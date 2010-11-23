@@ -70,12 +70,11 @@ GameObjectManager.getInstance = function() {
  * @return La référence de l'instance
  */
 GameObjectManager.prototype.initGameObjectManager = function() {
-  // Affecte le pointeur global avec la référence de l'objet
-  gameObjectManager = this;
+  GameObjectManager.instance = this;
 
   // Ajout de gestionnaires d'événements pour le clavier
-  document.onkeydown = function(e){gameObjectManager.keyDown(e); return false;};
-  document.onkeyup = function(e){gameObjectManager.keyUp(e); return false;};
+  document.onkeydown = function(e){GameObjectManager.instance.keyDown(e);};
+  document.onkeyup = function(e){GameObjectManager.instance.keyUp(e);};
 
   // Récupère les références des canvas et des context2D
   this.canvas = document.getElementById('canvas');
@@ -85,11 +84,8 @@ GameObjectManager.prototype.initGameObjectManager = function() {
   this.backBuffer.height = this.canvas.height;
   this.backBufferContext2D = this.backBuffer.getContext('2d');
 
-  // Créer un nouveau ApplicationManager
-  this.applicationManager = new ApplicationManager().initApplicationManager();
-
   // lance setInterval() pour dessiner périodiquement le gameObjectManager
-  setInterval(function(){gameObjectManager.draw();}, MILLISECONDS_BETWEEN_FRAMES);
+  setInterval(function(){GameObjectManager.instance.draw();}, MILLISECONDS_BETWEEN_FRAMES);
 
   return this;
 }
@@ -123,6 +119,7 @@ GameObjectManager.prototype.draw = function() {
 
   this.context2D.drawImage(this.backBuffer, 0, 0);
 
+  // DEBUG
   if(document.getElementById('span_fps'))
     if(typeof this.debugFps == 'undefined' || this.debugFps < 0) {
       document.getElementById('span_fps').innerHTML = Math.round(1 / delay);
