@@ -21,7 +21,7 @@ Starfish.enabledClasses = {
 };
 
 Starfish.load = function() {
-  for(klass in Starfish.enabledClasses)
+  for(var klass in Starfish.enabledClasses)
     if(Starfish.enabledClasses[klass] == 'on')
       document.write("<script type='text/javascript' src='starfish/"+klass+".js'></script>");
 };

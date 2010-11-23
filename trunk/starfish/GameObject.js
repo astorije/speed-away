@@ -33,11 +33,9 @@ GameObject.prototype.initGameObject = function(x, y, z) {
   this.x = x;
   this.y = y;
 
-  gameObjectManager.addGameObject(this);
-
   return this;
 }
 
 GameObject.prototype.destroyGameObject = function() {
-  gameObjectManager.removeGameObject(this);
+  GameObjectManager.removeGameObject(this);
 }
