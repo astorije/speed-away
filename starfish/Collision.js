@@ -16,6 +16,12 @@ Collision.between = function(obj1, obj2) {
   if(obj2 instanceof AARectangle
   && obj1 instanceof Circle)
     return Collision.circleAARectangle(obj1, obj2);
+
+  if(obj1 instanceof Circle
+  && obj2 instanceof Circle)
+    return Collision.circleCircle(obj1, obj2);
+
+  throw 'Unknown collision between two types.';
 }
 
 Collision.circleLine = function(circle, line) {
@@ -124,4 +130,13 @@ Collision.getShortestIntersection = function(point, segment) {
     return segment.a;
   else
     return segment.b;
+}
+
+Collision.circleCircle = function(circle1, circle2) {
+  var square_distance =
+    (circle2.center.x - circle1.center.x) * (circle2.center.x - circle1.center.x)
+    +
+    (circle2.center.y - circle1.center.y) * (circle2.center.y - circle1.center.y);
+
+  return square_distance <= (circle1.radius + circle2.radius)*(circle1.radius + circle2.radius);
 }

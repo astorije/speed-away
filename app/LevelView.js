@@ -12,22 +12,8 @@ var LevelView = function() {
 
 LevelView.prototype = new GameObject();
 
-LevelView.instance = null;
-
-/**
- * @deprecated
- */
-LevelView.getInstance = function() {
-  if(!LevelView.instance)
-    LevelView.instance = new LevelView();
-  return LevelView.instance;
-}
-
 LevelView.prototype.initLevelView = function(x, y, z) {
   this.initGameObject(x, y, z);
-
-  if(!LevelView.instance)
-    LevelView.instance = this;
 
   this.level = new Level().initLevel();
 

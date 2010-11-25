@@ -14,14 +14,17 @@ Array.prototype.remove = function(/**Number*/ from, /**Number*/ to)
     Removes a specific object from the array
     @param object The object to remove
 */
-Array.prototype.removeObject = function(object)
-{
-    for (var i = 0; i < this.length; ++i)
-    {
-        if (this[i] === object)
-        {
-            this.remove(i);
-            break;
-        }
+Array.prototype.removeObject = function(object) {
+  for (var i=0, loopCnt=this.length; i<this.length; ++i)
+    if (this[i] === object) {
+      this.remove(i);
+      return;
     }
-}
+};
+
+Array.prototype.contains = function(value) {
+  for(var i=0, loopCnt=this.length; i<loopCnt; ++i)
+    if(this[i] === value)
+      return true;
+  return false;
+};

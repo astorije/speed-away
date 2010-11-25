@@ -18,6 +18,8 @@ var Ball = function() {
   this.center = null;
   this.boundingBox = null;
   this.radius = 12;
+
+  this.collidingObjects = new Array();
 }
 
 Ball.prototype = new VisualGameObject();
@@ -80,11 +82,13 @@ Ball.prototype.update = function (dt, context, xScroll, yScroll) {
 
   this.updateCenter();
 
-  if(this.xSpeed != 0 || this.ySpeed != 0)
-    if(this.intersects(LevelView.getInstance())) {
-      this.x = X;
-      this.y = Y;
-      this.updateCenter();
+
+  //if(this.xSpeed != 0 || this.ySpeed != 0)
+    for(var i=0; i<this.collidingObjects.length; i++)
+      if(this.intersects(this.collidingObjects[i])) {
+        this.x = X;
+        this.y = Y;
+        this.updateCenter();
     }
 
   // Action des forces de frottements sur la vitesse
@@ -137,9 +141,7 @@ Ball.prototype.updateBoundingBox = function() {
 
 Ball.prototype.intersects = function(other) {
   if(other instanceof LevelView) {
-    var casesUnder = this.getCasesUnder();
-    var i;
-    var j;
+    var i, j, casesUnder = this.getCasesUnder(other);
     for(var k=0; k<casesUnder.length; k++) {
       i = casesUnder[k][0];
       j = casesUnder[k][1];
@@ -234,13 +236,60 @@ Ball.prototype.intersects = function(other) {
         return true;
       }
     }
-    return false;
   }
+
+  else if(other instanceof Ball) {
+    if(Collision.between(this.boundingBox, other.boundingBox)) {
+
+  // Calcul de la base orthonormée (n,g)
+  // n est perpendiculaire au plan de collision, g est tangent
+  nx = (other.x - this.x)/(this.radius + other.radius);
+  ny = (other.y - this.y)/(this.radius + other.radius);
+  gx = -ny;
+  gy = nx;
+
+  vix = (this.mass*this.xSpeed + other.mass*other.xSpeed) / (this.mass + other.mass);
+  viy = (this.mass*this.ySpeed + other.mass*other.ySpeed) / (this.mass + other.mass);
+
+  // Calcul des vitesses dans cette base
+  v1n = nx*this.xSpeed + ny*this.ySpeed;
+  v1g = gx*this.xSpeed + gy*this.ySpeed;
+  v2n = nx*other.xSpeed + ny*other.ySpeed;
+  v2g = gx*other.xSpeed + gy*other.ySpeed;
+
+  vin = (this.mass*v1n + other.mass*v2n) / (this.mass + other.mass);
+  vig = (this.mass*v1g + other.mass*v2g) / (this.mass + other.mass);
+
+  v1nf = - v1n + 2*vin;
+  v1gf = - v1g + 2*vig;
+  v2nf = - v2n + 2*vin;
+  v2gf = - v2g + 2*vig;
+
+  // Permute les coordonnées n et conserve la vitesse tangentielle
+  // Exécute la transformation inverse (base orthonormée => matrice transposée)
+  //this.xSpeed = nx*(-v1n+2*vin) + gx*(-v2g+2*vig);
+  //this.ySpeed = ny*(-v1n+2*vin) +  gy*(-v2g+2*vig);
+  //other.xSpeed = nx*(-v2n+2*vin) +  gx*(-v1g+2*vig);
+  //other.ySpeed = ny*(-v2n+2*vin) +  gy*(-v1g+2*vig);
+
+  this.xSpeed = nx*v1nf + gx*v2gf;
+  this.ySpeed = ny*v1nf + gy*v2gf;
+  other.xSpeed = nx*v2nf + gx*v1gf;
+  other.ySpeed = ny*v2nf + gy*v1gf;
+
+      return true;
+    }
+  }
+
+  return false;
 }
 
-Ball.prototype.getCasesUnder = function() {
-  var levelView = LevelView.getInstance();
+Ball.prototype.canCollideWith = function(object) {
+  if(object != this && !this.collidingObjects.contains(object))
+    this.collidingObjects.push(object);
+}
 
+Ball.prototype.getCasesUnder = function(levelView) {
   var cases = new Array();
 
   var i_center = levelView.getLevelColumn(this.center.x);
