@@ -241,41 +241,36 @@ Ball.prototype.intersects = function(other) {
   else if(other instanceof Ball) {
     if(Collision.between(this.boundingBox, other.boundingBox)) {
 
-  // Calcul de la base orthonormée (n,g)
-  // n est perpendiculaire au plan de collision, g est tangent
-  nx = (other.x - this.x)/(this.radius + other.radius);
-  ny = (other.y - this.y)/(this.radius + other.radius);
-  gx = -ny;
-  gy = nx;
+      // Calcul de la base orthonormée (n,g)
+      // n est perpendiculaire au plan de collision, g est tangent
+      var nx = (other.x - this.x)/(this.radius + other.radius);
+      var ny = (other.y - this.y)/(this.radius + other.radius);
+      var gx = -ny;
+      var gy = nx;
 
-  vix = (this.mass*this.xSpeed + other.mass*other.xSpeed) / (this.mass + other.mass);
-  viy = (this.mass*this.ySpeed + other.mass*other.ySpeed) / (this.mass + other.mass);
+      // Calcul des vitesses dans cette base (avant choc)
+      var tSpeedN = nx*this.xSpeed + ny*this.ySpeed;
+      var tSpeedG = gx*this.xSpeed + gy*this.ySpeed;
+      var oSpeedN = nx*other.xSpeed + ny*other.ySpeed;
+      var oSpeedG = gx*other.xSpeed + gy*other.ySpeed;
 
-  // Calcul des vitesses dans cette base
-  v1n = nx*this.xSpeed + ny*this.ySpeed;
-  v1g = gx*this.xSpeed + gy*this.ySpeed;
-  v2n = nx*other.xSpeed + ny*other.ySpeed;
-  v2g = gx*other.xSpeed + gy*other.ySpeed;
+      // Vitesse du centre d'inertie dans cette base
+      // Permet de déterminer la normale de choc, utile pour les chocs indirects
+      var massCenterSpeedN = (this.mass*tSpeedN + other.mass*oSpeedN) / (this.mass + other.mass);
+      var massCenterSpeedG = (this.mass*tSpeedG + other.mass*oSpeedG) / (this.mass + other.mass);
 
-  vin = (this.mass*v1n + other.mass*v2n) / (this.mass + other.mass);
-  vig = (this.mass*v1g + other.mass*v2g) / (this.mass + other.mass);
+      // Vitesses après choc en fonction des masses et des vitesses initiales
+      var new_tSpeedN = - oSpeedN + 2*massCenterSpeedN;
+      var new_tSpeedG = - oSpeedG + 2*massCenterSpeedG;
+      var new_oSpeedN = - tSpeedN + 2*massCenterSpeedN;
+      var new_oSpeedG = - tSpeedG + 2*massCenterSpeedG;
 
-  v1nf = - v1n + 2*vin;
-  v1gf = - v1g + 2*vig;
-  v2nf = - v2n + 2*vin;
-  v2gf = - v2g + 2*vig;
-
-  // Permute les coordonnées n et conserve la vitesse tangentielle
-  // Exécute la transformation inverse (base orthonormée => matrice transposée)
-  //this.xSpeed = nx*(-v1n+2*vin) + gx*(-v2g+2*vig);
-  //this.ySpeed = ny*(-v1n+2*vin) +  gy*(-v2g+2*vig);
-  //other.xSpeed = nx*(-v2n+2*vin) +  gx*(-v1g+2*vig);
-  //other.ySpeed = ny*(-v2n+2*vin) +  gy*(-v1g+2*vig);
-
-  this.xSpeed = nx*v1nf + gx*v2gf;
-  this.ySpeed = ny*v1nf + gy*v2gf;
-  other.xSpeed = nx*v2nf + gx*v1gf;
-  other.ySpeed = ny*v2nf + gy*v1gf;
+      // Permute les coordonnées n et conserve la vitesse tangentielle
+      // Exécute la transformation inverse (base orthonormée => matrice transposée)
+      this.xSpeed  = nx*new_oSpeedN + gx*new_tSpeedG;
+      this.ySpeed  = ny*new_oSpeedN + gy*new_tSpeedG;
+      other.xSpeed = nx*new_tSpeedN + gx*new_oSpeedG;
+      other.ySpeed = ny*new_tSpeedN + gy*new_oSpeedG;
 
       return true;
     }
