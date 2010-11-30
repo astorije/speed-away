@@ -6,6 +6,7 @@ var LineShapeGameObject = function() {
   this.totalTime = 2;
   this.ratio = 1;
   this.dir = 'down';
+  this.sliding = false;
 
   this.boundingBox = null;
 }
@@ -52,6 +53,6 @@ LineShapeGameObject.prototype.draw = function(delay, context, xScroll, yScroll) 
   context.closePath();
 }
 
-LineShapeGameObject.prototype.slideUp = function(duration) {
-
+LineShapeGameObject.prototype.slide = function(duration) {
+  this.sliding = true;
 }

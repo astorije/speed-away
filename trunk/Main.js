@@ -9,6 +9,7 @@ Starfish.enable(['VisualGameObject', 'AnimatedVisualGameObject']);
 Starfish.enable(['ShapeGameObject', 'RectangleShapeGameObject', 'LineShapeGameObject']);
 Starfish.enable('GameObjectManager');
 Starfish.enable('Keyboard');
+Starfish.enable('Observable');
 Starfish.load();
 
 include('app/Ball.js');
@@ -42,9 +43,6 @@ function init() {
 
   var levelView = new LevelView().initLevelView(14, 14, 2);
   gameObjectManager.addGameObject(levelView);
-
-player1.mass = 1;
-player2.mass = 1;
 
   player1.canCollideWith(levelView);
   player2.canCollideWith(levelView);

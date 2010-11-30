@@ -16,6 +16,7 @@ LevelView.prototype.initLevelView = function(x, y, z) {
   this.initGameObject(x, y, z);
 
   this.level = new Level().initLevel();
+  this.level.addObserver(this);
 
  /*new RectangleShapeGameObject().initRectangleShapeGameObject(
     this.x, this.y, this.z,
@@ -58,6 +59,18 @@ LevelView.prototype.initLevelView = function(x, y, z) {
   return this;
 }
 
+LevelView.prototype.update = function(delay, context, xScroll, yScroll) {
+  this.level.update(delay);
+
+    for(var j=0; j<this.level.height; j++)
+    for(var i=0; i<this.level.width; i++) {
+      if(this.horizontalWalls[j][i] instanceof LineShapeGameObject)
+        this.horizontalWalls[j][i].update(delay, context, xScroll, yScroll);
+      if(this.verticalWalls[j][i] instanceof LineShapeGameObject)
+        this.verticalWalls[j][i].update(delay, context, xScroll, yScroll);
+    }
+}
+
 LevelView.prototype.draw = function(delay, context, xScroll, yScroll) {
   for(var j=0; j<this.level.height; j++)
     for(var i=0; i<this.level.width; i++) {
@@ -92,12 +105,19 @@ LevelView.prototype.getBottomWall = function(i, j) {
   return this.horizontalWalls[j+1][i];
 }
 
-/*
-LevelView.prototype.getWalls = function(i, j) {
-  walls = new Array();
-
-  if(this.level.hasRightWall(i, j))
-    walls.push(this.getRightWall(i, j));
-
-  return walls;
-}*/
+LevelView.prototype.observe = function(observable, type, values) {
+  if(type == 'addedLeftWall') {
+    this.verticalWalls[values.j][values.i] = new LineShapeGameObject().initLineShapeGameObject(
+          this.x + values.i*this.squareSize,
+          this.y + values.j*this.squareSize,
+          this.z,
+          this.lineWidth,
+          this.strokeStyle,
+          this.x + values.i*this.squareSize,
+          this.y + (values.j+1)*this.squareSize
+        );
+  }
+  else if(type == 'removedLeftWall') {
+    this.verticalWalls[values.j][values.i] = null;
+  }
+}
