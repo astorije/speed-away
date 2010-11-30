@@ -4,6 +4,7 @@ var Ball = function() {
   this.friction = 350;
   this.acceleration = 800;
   this.maxSpeed = 250;
+  this.mass = 1;
 
   this.left = false;
   this.right = false;

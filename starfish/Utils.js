@@ -16,10 +16,8 @@ Array.prototype.remove = function(/**Number*/ from, /**Number*/ to)
 */
 Array.prototype.removeObject = function(object) {
   for (var i=0, loopCnt=this.length; i<this.length; ++i)
-    if (this[i] === object) {
+    if (this[i] === object)
       this.remove(i);
-      return;
-    }
 };
 
 Array.prototype.contains = function(value) {
@@ -28,3 +26,7 @@ Array.prototype.contains = function(value) {
       return true;
   return false;
 };
+
+Math.intRandomBetween = function(a, b) {
+  return a + Math.floor(Math.random()*b);
+}
