@@ -14,36 +14,16 @@ var AARectangle = function() {
 }
 
 AARectangle.prototype.initAARectangle = function(arg0, arg1, arg2 /** Optionnel **/) {
-  if(arg0 instanceof Point && arg1 instanceof Point) {
+  if(arg0 instanceof Point && arg1 instanceof Point)
     this.calculatePoints(arg0, arg1);
-  }
-  else {
-    this.topLeft = arg0;
-    this.width = arg1;
-    this.height = arg2;
-
-    this.bottomRight = new Point().initPoint(
-      this.topLeft.x + this.width,
-      this.topLeft.y + this.height
-    );
-
-    this.topRight = new Point().initPoint(
-      this.topLeft.x + this.width,
-      this.topLeft.y
-    );
-
-    this.bottomLeft = new Point().initPoint(
-      this.topLeft.x,
-      this.topLeft.y + this.height
-    );
-
-    this.topBorder = new Segment().initSegment(this.topLeft, this.topRight);
-    this.bottomBorder = new Segment().initSegment(this.bottomLeft, this.bottomRight);
-    this.leftBorder = new Segment().initSegment(this.topLeft, this.bottomLeft);
-    this.rightBorder = new Segment().initSegment(this.topRight, this.bottomRight);
-  }
+  else
+    this.calculatePointSizes(arg0, arg1, arg2);
 
   return this;
+}
+
+AARectangle.prototype.setTopLeftPoint = function(p) {
+  this.calculatePoints(p, this.bottomRight);
 }
 
 AARectangle.prototype.setBottomRightPoint = function(p) {
@@ -108,9 +88,36 @@ AARectangle.prototype.calculatePoints = function (a, b) {
     );
   }
 
+  this.calculateBorders();
+
   this.width = this.topRight.x - this.topLeft.x;
   this.height = this.bottomRight.y - this.bottomLeft.y;
+}
 
+AARectangle.prototype.calculatePointSizes = function(a, width, height) {
+    this.topLeft = a;
+    this.width = width;
+    this.height = height;
+
+    this.bottomRight = new Point().initPoint(
+      this.topLeft.x + this.width,
+      this.topLeft.y + this.height
+    );
+
+    this.topRight = new Point().initPoint(
+      this.topLeft.x + this.width,
+      this.topLeft.y
+    );
+
+    this.bottomLeft = new Point().initPoint(
+      this.topLeft.x,
+      this.topLeft.y + this.height
+    );
+
+    this.calculateBorders();
+}
+
+AARectangle.prototype.calculateBorders = function() {
   this.topBorder = new Segment().initSegment(this.topLeft, this.topRight);
   this.bottomBorder = new Segment().initSegment(this.bottomLeft, this.bottomRight);
   this.leftBorder = new Segment().initSegment(this.topLeft, this.bottomLeft);

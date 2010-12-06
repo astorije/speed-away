@@ -46,5 +46,5 @@ GameObject.prototype.canCollideWith = function(object) {
 }
 
 GameObject.prototype.destroyGameObject = function() {
-  GameObjectManager.removeGameObject(this);
+  GameObjectManager.instance.removeGameObject(this);
 }

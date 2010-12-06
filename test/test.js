@@ -149,7 +149,7 @@ test('hasTopWall()', function() {
     for(var i=0; i<level.width; i++)
       if(level.walls[j][i] == 1 || level.walls[j][i] == 3
       || level.walls[j][i] == 5 || level.walls[j][i] == 7
-      || level.walls[j][i] == 9 || level.walls[j][i] == 12
+      || level.walls[j][i] == 9 || level.walls[j][i] == 11
       || level.walls[j][i] == 13|| level.walls[j][i] == 15)
         ok(level.hasTopWall(i, j));
       else

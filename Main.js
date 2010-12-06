@@ -15,6 +15,9 @@ Starfish.load();
 include('app/Ball.js');
 include('app/Level.js');
 include('app/LevelView.js');
+include('app/ExitItem.js');
+include('app/MirrorItem.js');
+include('app/ItemManager.js');
 include('app/ApplicationManager.js');
 
 /**
@@ -51,5 +54,14 @@ function init() {
   player2.canCollideWith(levelView);
   player2.canCollideWith(player1);
   player1.canCollideWith(player2);
+
+  new ItemManager().initItemManager();
+
+  var exit = new ExitItem().initExitItem();
+  levelView.placeItem(exit, 9, 5);
+  gameObjectManager.addGameObject(exit);
+
+  player1.canCollideWith(exit);
+  player2.canCollideWith(exit);
 }
 
