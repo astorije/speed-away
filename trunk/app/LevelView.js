@@ -6,8 +6,13 @@ var LevelView = function() {
 
   this.level = null; // Modèle
 
+  this.timeBetweenWallChanging = 3; // secondes
+  this.timeSinceLastWallChanging = 0;
+
   this.verticalWalls = [];
   this.horizontalWalls = [];
+
+  this.obstacles = new Array();
 }
 
 LevelView.prototype = new GameObject();
@@ -31,43 +36,97 @@ LevelView.prototype.initLevelView = function(x, y, z) {
     this.verticalWalls[j] = [];
     this.horizontalWalls[j] = [];
     for(var i=0; i<this.level.width; i++) {
-      if(this.level.hasLeftWall(i, j)) // Lignes verticales
-        this.verticalWalls[j][i] = new LineShapeGameObject().initLineShapeGameObject(
-          this.x + i*this.squareSize,
-          this.y + j*this.squareSize,
-          this.z,
-          this.lineWidth,
-          this.strokeStyle,
-          this.x + i*this.squareSize,
-          this.y + (j+1)*this.squareSize
-        );
-      else this.verticalWalls[j][i] = null;
-      if(this.level.hasTopWall(i, j)) // Lignes horizontales
-        this.horizontalWalls[j][i] = new LineShapeGameObject().initLineShapeGameObject(
-          this.x + i*this.squareSize,
-          this.y + j*this.squareSize,
-          this.z,
-          this.lineWidth,
-          this.strokeStyle,
-          this.x + (i+1)*this.squareSize,
-          this.y + j*this.squareSize
-        );
-      else this.horizontalWalls[j][i] = null;
+      this.verticalWalls[j][i] = new LineShapeGameObject().initLineShapeGameObject(
+        this.x + i*this.squareSize,
+        this.y + j*this.squareSize,
+        this.zOrder,
+        this.lineWidth,
+        this.strokeStyle,
+        this.x + i*this.squareSize,
+        this.y + (j+1)*this.squareSize
+      );
+
+      if(this.level.hasLeftWall(i, j)) { // Lignes verticales
+        if(this.level.isLeftStateFixed(i, j))
+          this.verticalWalls[j][i].strokeStyle = '#00F';
+        this.verticalWalls[j][i].show();
+      }
+      else
+        this.verticalWalls[j][i].hide();
+
+      this.horizontalWalls[j][i] = new LineShapeGameObject().initLineShapeGameObject(
+        this.x + i*this.squareSize,
+        this.y + j*this.squareSize,
+        this.zOrder,
+        this.lineWidth,
+        this.strokeStyle,
+        this.x + (i+1)*this.squareSize,
+        this.y + j*this.squareSize
+      );
+
+      if(this.level.hasTopWall(i, j)) { // Lignes horizontales
+        if(this.level.isTopStateFixed(i, j))
+          this.horizontalWalls[j][i].strokeStyle = '#00F';
+        this.horizontalWalls[j][i].show();
+      }
+      else
+        this.horizontalWalls[j][i].hide();
     }
   }
 
   return this;
 }
 
-LevelView.prototype.update = function(delay, context, xScroll, yScroll) {
-  this.level.update(delay);
+LevelView.prototype.createVerticalWall = function(i, j) {
+  return new LineShapeGameObject().initLineShapeGameObject(
+    this.x + i*this.squareSize,
+    this.y + j*this.squareSize,
+    this.z,
+    this.lineWidth,
+    this.strokeStyle,
+    this.x + i*this.squareSize,
+    this.y + (j+1)*this.squareSize
+  );
+}
 
-    for(var j=0; j<this.level.height; j++)
+LevelView.prototype.update = function(delay, context, xScroll, yScroll) {
+  this.timeSinceLastWallChanging += delay;
+  if(this.timeSinceLastWallChanging >= this.timeBetweenWallChanging) {
+    this.timeSinceLastWallChanging -= this.timeBetweenWallChanging;
+
+    var i, j, horizontal;
+
+    do {
+      horizontal = Math.intRandomBetween(0, 1);
+      i = Math.intRandomBetween(0, this.level.width - 1);
+      j = Math.intRandomBetween(0, this.level.height - 1);
+    } while(
+      horizontal && !this.level.removeTopWall(i, j)
+      || !horizontal && !this.level.removeLeftWall(i, j)
+    );
+
+    do {
+      horizontal = Math.intRandomBetween(0, 1);
+      i = Math.intRandomBetween(0, this.level.width - 1);
+      j = Math.intRandomBetween(0, this.level.height - 1);
+    } while(!this.obstacleAt(i, j) && (
+      horizontal && !this.level.addTopWall(i, j)
+      || !horizontal && !this.level.addLeftWall(i, j)
+    ));
+  }
+
+  for(var j=0; j<this.level.height; j++)
     for(var i=0; i<this.level.width; i++) {
-      if(this.horizontalWalls[j][i] instanceof LineShapeGameObject)
-        this.horizontalWalls[j][i].update(delay, context, xScroll, yScroll);
-      if(this.verticalWalls[j][i] instanceof LineShapeGameObject)
-        this.verticalWalls[j][i].update(delay, context, xScroll, yScroll);
+      this.horizontalWalls[j][i].update(delay, context, xScroll, yScroll);
+      this.verticalWalls[j][i].update(delay, context, xScroll, yScroll);
+
+      if(this.horizontalWalls[j][i].slidingRatio == 1
+      && this.horizontalWalls[j][i].strokeStyle == '#0F0')
+        this.horizontalWalls[j][i].strokeStyle = this.strokeStyle;
+
+      if(this.verticalWalls[j][i].slidingRatio == 1
+      && this.verticalWalls[j][i].strokeStyle == '#0F0')
+        this.verticalWalls[j][i].strokeStyle = this.strokeStyle;
     }
 }
 
@@ -107,17 +166,31 @@ LevelView.prototype.getBottomWall = function(i, j) {
 
 LevelView.prototype.observe = function(observable, type, values) {
   if(type == 'addedLeftWall') {
-    this.verticalWalls[values.j][values.i] = new LineShapeGameObject().initLineShapeGameObject(
-          this.x + values.i*this.squareSize,
-          this.y + values.j*this.squareSize,
-          this.z,
-          this.lineWidth,
-          this.strokeStyle,
-          this.x + values.i*this.squareSize,
-          this.y + (values.j+1)*this.squareSize
-        );
+    this.verticalWalls[values.j][values.i].strokeStyle = '#0F0';
+    this.verticalWalls[values.j][values.i].slideOn(1.5);
   }
   else if(type == 'removedLeftWall') {
-    this.verticalWalls[values.j][values.i] = null;
+    this.verticalWalls[values.j][values.i].strokeStyle = '#F00';
+    this.verticalWalls[values.j][values.i].slideOff(1.5);
   }
+
+  else if(type == 'addedTopWall') {
+    this.horizontalWalls[values.j][values.i].strokeStyle = '#0F0';
+    this.horizontalWalls[values.j][values.i].slideOn(1.5);
+  }
+  else if(type == 'removedTopWall') {
+    this.horizontalWalls[values.j][values.i].strokeStyle = '#F00';
+    this.horizontalWalls[values.j][values.i].slideOff(1.5);
+  }
+}
+
+LevelView.prototype.obstacleAt = function(i, j) {
+  for(var k=0; k<this.collidingObjects.length; ++k)
+    if(this.collidingObjects[k] instanceof Ball) {
+      var cases = this.collidingObjects[k].getCasesUnder(this);
+      for(var l=0; l<cases.length; ++l)
+        if(cases[l][0] == i && cases[l][1] == j)
+          return true;
+    }
+  return false;
 }

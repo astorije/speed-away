@@ -19,8 +19,6 @@ var Ball = function() {
   this.center = null;
   this.boundingBox = null;
   this.radius = 12;
-
-  this.collidingObjects = new Array();
 }
 
 Ball.prototype = new VisualGameObject();
@@ -147,7 +145,7 @@ Ball.prototype.intersects = function(other) {
       i = casesUnder[k][0];
       j = casesUnder[k][1];
 
-      if(this.ySpeed <= 0 && other.level.hasTopWall(i, j) // Mur au-dessus
+      if(this.ySpeed <= 0 // Mur au-dessus
       && Collision.between(
         other.getTopWall(i, j).boundingBox.bottomBorder,
         this.boundingBox
@@ -169,7 +167,7 @@ Ball.prototype.intersects = function(other) {
         ));
         return true;
       }
-      else if(this.ySpeed > 0 && other.level.hasBottomWall(i, j) // Mur au-dessous
+      else if(this.ySpeed > 0 // Mur au-dessous
       && Collision.between(
         other.getBottomWall(i, j).boundingBox.topBorder,
         this.boundingBox
@@ -192,7 +190,7 @@ Ball.prototype.intersects = function(other) {
         return true;
       }
 
-      if(this.xSpeed <= 0 && other.level.hasLeftWall(i, j) // Mur à gauche
+      if(this.xSpeed <= 0 // Mur à gauche
       && Collision.between(
         other.getLeftWall(i, j).boundingBox.rightBorder,
         this.boundingBox
@@ -214,7 +212,7 @@ Ball.prototype.intersects = function(other) {
         ));
         return true;
       }
-      else if(this.xSpeed > 0 && other.level.hasRightWall(i, j) // Mur à droite
+      else if(this.xSpeed > 0 // Mur à droite
       && Collision.between(
         other.getRightWall(i, j).boundingBox.leftBorder,
         this.boundingBox
@@ -280,11 +278,6 @@ Ball.prototype.intersects = function(other) {
   return false;
 }
 
-Ball.prototype.canCollideWith = function(object) {
-  if(object != this && !this.collidingObjects.contains(object))
-    this.collidingObjects.push(object);
-}
-
 Ball.prototype.getCasesUnder = function(levelView) {
   var cases = new Array();
 
@@ -297,8 +290,8 @@ Ball.prototype.getCasesUnder = function(levelView) {
   if(i_left >= 0 && i_left != i_center) cases.push([i_left, j_center]);
   else if(i_right != i_center) cases.push([i_right, j_center]);
 
-  var j_top = levelView.getLevelColumn(this.center.y - this.radius);
-  var j_bottom = levelView.getLevelColumn(this.center.y + this.radius);
+  var j_top = levelView.getLevelRow(this.center.y - this.radius);
+  var j_bottom = levelView.getLevelRow(this.center.y + this.radius);
   if(j_top >= 0 && j_top != j_center) cases.push([i_center, j_top]);
   else if(j_bottom != j_center) cases.push([i_center, j_bottom]);
 
@@ -310,7 +303,6 @@ Ball.prototype.getCasesUnder = function(levelView) {
     if(j_top != j_center) cases.push([i_right, j_top]);
     else if(j_bottom != j_center) cases.push([i_right, j_bottom]);
   }
-
   return cases;
 }
 
