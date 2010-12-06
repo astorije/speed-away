@@ -22,11 +22,11 @@ Array.prototype.removeObject = function(object) {
 
 Array.prototype.contains = function(value) {
   for(var i=0, loopCnt=this.length; i<loopCnt; ++i)
-    if(this[i] === value)
+    if(this[i] == value)
       return true;
   return false;
 };
 
 Math.intRandomBetween = function(a, b) {
-  return a + Math.floor(Math.random()*b);
+  return a + Math.round(Math.random()*b);
 }

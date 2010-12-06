@@ -1,9 +1,10 @@
 function Observable() {
-  this.observers = new Array();
+  this.observers = null;
   this.observable = null;
 }
 
 Observable.prototype.initObservable = function(observable) {
+  this.observers = new Array();
   this.observable = observable;
   return this;
 }

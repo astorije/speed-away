@@ -20,6 +20,8 @@ var GameObject = function() {
    * @type Number
    */
   this.y = 0;
+
+  this.collidingObjects = null;
 }
 
 /**
@@ -33,7 +35,14 @@ GameObject.prototype.initGameObject = function(x, y, z) {
   this.x = x;
   this.y = y;
 
+  this.collidingObjects = new Array();
+
   return this;
+}
+
+GameObject.prototype.canCollideWith = function(object) {
+  if(object != this && !this.collidingObjects.contains(object))
+    this.collidingObjects.push(object);
 }
 
 GameObject.prototype.destroyGameObject = function() {

@@ -2,11 +2,10 @@ var LineShapeGameObject = function() {
   this.toX = null;
   this.toY = null;
 
-  this.time = 0;
-  this.totalTime = 2;
-  this.ratio = 1;
-  this.dir = 'down';
-  this.sliding = false;
+  this.slidingDuration = null;
+  this.slidingRatio = 1;
+  this.slidingOff = false;
+  this.slidingOn = false;
 
   this.boundingBox = null;
 }
@@ -20,23 +19,39 @@ LineShapeGameObject.prototype.initLineShapeGameObject = function(x, y, z, lineWi
   this.toY = toY;
 
   this.boundingBox = new AARectangle().initAARectangle(
-    new Point().initPoint(x, y),
-    (toX > x ? toX - x : x - toX) + (x == toX)*(Math.max(0, lineWidth-1)),
-    (toY > y ? toY - y : y - toY) + (y == toY)*(Math.max(0, lineWidth-1))
+    new Point().initPoint(this.x, this.y),
+    new Point().initPoint(this.toX, this.toY)
   );
+
+  //this.updateBoudingBox();
 
   return this;
 }
 
 LineShapeGameObject.prototype.update = function(delay, context, xScroll, yScroll) {
-  /*if(this.time < 0) this.dir = 'down';
-  else if(this.time > this.totalTime) this.dir = 'up';
-  if(this.dir == 'up')
-    this.time -= delay;
-  else
-    this.time += delay;
-  this.ratio = Math.min(1, Math.max(0, this.time / this.totalTime));
-  */this.ratio = 1;
+  if(this.slidingOff) {
+    this.slidingRatio -= delay / this.slidingDuration;
+    if(this.slidingRatio <= 0) {
+      this.slidingRatio = 0;
+      this.slidingOff = false;
+    }
+    this.updateBoudingBox();
+  }
+  else if(this.slidingOn) {
+    this.slidingRatio += delay / this.slidingDuration;
+    if(this.slidingRatio >= 1) {
+      this.slidingRatio = 1;
+      this.slidingOn = false;
+    }
+  this.updateBoudingBox();
+  }
+}
+
+LineShapeGameObject.prototype.updateBoudingBox = function() {
+  this.boundingBox.setBottomRightPoint(new Point().initPoint(
+    this.x + (this.toX - this.x)*this.slidingRatio + (this.x == this.toX)*(Math.max(0, this.lineWidth-1)),
+    this.y + (this.toY - this.y)*this.slidingRatio + (this.y == this.toY)*(Math.max(0, this.lineWidth-1))
+  ));
 }
 
 LineShapeGameObject.prototype.draw = function(delay, context, xScroll, yScroll) {
@@ -46,13 +61,31 @@ LineShapeGameObject.prototype.draw = function(delay, context, xScroll, yScroll) 
   context.beginPath();
   context.moveTo(this.x, this.y);
   context.lineTo(
-    this.x + (this.toX - this.x) * this.ratio,
-    this.y + (this.toY - this.y) * this.ratio
+    this.x + (this.toX - this.x) * this.slidingRatio,
+    this.y + (this.toY - this.y) * this.slidingRatio
   );
   context.stroke();
   context.closePath();
 }
 
-LineShapeGameObject.prototype.slide = function(duration) {
-  this.sliding = true;
+LineShapeGameObject.prototype.slideOn = function(duration) {
+  this.slidingDuration = duration;
+  this.slidingOn = true;
+  this.slidingOff = false;
+}
+
+LineShapeGameObject.prototype.slideOff = function(duration) {
+  this.slidingDuration = duration;
+  this.slidingOn = false;
+  this.slidingOff = true;
+}
+
+LineShapeGameObject.prototype.show = function() {
+  this.slidingRatio = 1;
+  this.updateBoudingBox();
+}
+
+LineShapeGameObject.prototype.hide = function() {
+  this.slidingRatio = 0;
+  this.updateBoudingBox();
 }

@@ -21,7 +21,7 @@ include('app/ApplicationManager.js');
  * Intervalle entre 2 images : 1000 / FPS
  * @type Number
  */
-var MILLISECONDS_BETWEEN_FRAMES = 1000 / 60;
+var MILLISECONDS_BETWEEN_FRAMES = 1000 / 50;
 
 var img_ball_blue = new Image();
 img_ball_blue.src = "img/ball_blue.png";
@@ -43,6 +43,9 @@ function init() {
 
   var levelView = new LevelView().initLevelView(14, 14, 2);
   gameObjectManager.addGameObject(levelView);
+
+  levelView.canCollideWith(player1);
+  levelView.canCollideWith(player2);
 
   player1.canCollideWith(levelView);
   player2.canCollideWith(levelView);
