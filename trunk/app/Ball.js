@@ -237,6 +237,8 @@ Ball.prototype.intersects = function(other) {
     }
   }
 
+  else if(other.boundingBox == null) return false;
+
   else if(other instanceof Ball) {
     if(Collision.between(this.boundingBox, other.boundingBox)) {
 
@@ -272,6 +274,13 @@ Ball.prototype.intersects = function(other) {
       other.ySpeed = ny*new_tSpeedN + gy*new_oSpeedG;
 
       return true;
+    }
+  }
+
+  else if(other instanceof ExitItem) {
+    if(Collision.between(this.boundingBox, other.boundingBox)) {
+      alert("You Win!");
+      other.destroyVisualGameObject();
     }
   }
 

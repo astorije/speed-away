@@ -39,5 +39,6 @@ VisualGameObject.prototype.draw = function(delay, context, xScroll, yScroll) {
 }
 
 VisualGameObject.prototype.destroyVisualGameObject = function() {
+  this.boundingBox = null;
   this.destroyGameObject();
 }

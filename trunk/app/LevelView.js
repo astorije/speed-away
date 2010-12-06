@@ -12,13 +12,15 @@ var LevelView = function() {
   this.verticalWalls = [];
   this.horizontalWalls = [];
 
-  this.obstacles = new Array();
+  this.obstacles = null;
 }
 
 LevelView.prototype = new GameObject();
 
 LevelView.prototype.initLevelView = function(x, y, z) {
   this.initGameObject(x, y, z);
+
+  this.obstacles = [];
 
   this.level = new Level().initLevel();
   this.level.addObserver(this);
@@ -32,6 +34,10 @@ LevelView.prototype.initLevelView = function(x, y, z) {
     this.level.height * this.squareSize
   );
 */
+
+  this.verticalWalls = [];
+  this.horizontalWalls = [];
+
   for(var j=0; j<this.level.height; j++) {
     this.verticalWalls[j] = [];
     this.horizontalWalls[j] = [];
@@ -75,18 +81,6 @@ LevelView.prototype.initLevelView = function(x, y, z) {
   }
 
   return this;
-}
-
-LevelView.prototype.createVerticalWall = function(i, j) {
-  return new LineShapeGameObject().initLineShapeGameObject(
-    this.x + i*this.squareSize,
-    this.y + j*this.squareSize,
-    this.z,
-    this.lineWidth,
-    this.strokeStyle,
-    this.x + i*this.squareSize,
-    this.y + (j+1)*this.squareSize
-  );
 }
 
 LevelView.prototype.update = function(delay, context, xScroll, yScroll) {
@@ -165,22 +159,24 @@ LevelView.prototype.getBottomWall = function(i, j) {
 }
 
 LevelView.prototype.observe = function(observable, type, values) {
-  if(type == 'addedLeftWall') {
-    this.verticalWalls[values.j][values.i].strokeStyle = '#0F0';
-    this.verticalWalls[values.j][values.i].slideOn(1.5);
-  }
-  else if(type == 'removedLeftWall') {
-    this.verticalWalls[values.j][values.i].strokeStyle = '#F00';
-    this.verticalWalls[values.j][values.i].slideOff(1.5);
-  }
+  if(observable instanceof Level) {
+    if(type == 'addedLeftWall') {
+      this.verticalWalls[values.j][values.i].strokeStyle = '#0F0';
+      this.verticalWalls[values.j][values.i].slideOn(1.5);
+    }
+    else if(type == 'removedLeftWall') {
+      this.verticalWalls[values.j][values.i].strokeStyle = '#F00';
+      this.verticalWalls[values.j][values.i].slideOff(1.5);
+    }
 
-  else if(type == 'addedTopWall') {
-    this.horizontalWalls[values.j][values.i].strokeStyle = '#0F0';
-    this.horizontalWalls[values.j][values.i].slideOn(1.5);
-  }
-  else if(type == 'removedTopWall') {
-    this.horizontalWalls[values.j][values.i].strokeStyle = '#F00';
-    this.horizontalWalls[values.j][values.i].slideOff(1.5);
+    else if(type == 'addedTopWall') {
+      this.horizontalWalls[values.j][values.i].strokeStyle = '#0F0';
+      this.horizontalWalls[values.j][values.i].slideOn(1.5);
+    }
+    else if(type == 'removedTopWall') {
+      this.horizontalWalls[values.j][values.i].strokeStyle = '#F00';
+      this.horizontalWalls[values.j][values.i].slideOff(1.5);
+    }
   }
 }
 
@@ -193,4 +189,10 @@ LevelView.prototype.obstacleAt = function(i, j) {
           return true;
     }
   return false;
+}
+
+LevelView.prototype.placeItem = function(item, i, j) {
+  item.x = this.x + (i+0.5)*this.squareSize - item.frameWidth/2;
+  item.y = this.y + (j+0.5)*this.squareSize - item.image.height/2;
+  item.updateBoundingBox();
 }

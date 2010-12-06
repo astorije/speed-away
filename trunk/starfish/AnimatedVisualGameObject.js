@@ -31,6 +31,8 @@ function AnimatedVisualGameObject() {
    * @return Number;
    */
   this.frameCount = 0;
+
+  this.boundingBox = null;
 }
 
 AnimatedVisualGameObject.prototype = new VisualGameObject;
@@ -57,9 +59,14 @@ AnimatedVisualGameObject.prototype.initAnimatedVisualGameObject = function(x, y,
   this.frameWidth = this.image.width / frameCount;
   this.frameCount = frameCount;
 
+  this.boundingBox = new AARectangle().initAARectangle(new Point().initPoint(this.x, this.y), this.frameWidth, this.image.height);
+
   return this;
 }
 
+AnimatedVisualGameObject.prototype.updateBoundingBox = function() {
+  this.boundingBox.calculatePointSizes(new Point().initPoint(this.x, this.y), this.frameWidth, this.image.height);
+}
 
 AnimatedVisualGameObject.prototype.setAnimation = function(image, frameCount, fps) {
   if (frameCount <= 0) throw "framecount can not be <= 0";
