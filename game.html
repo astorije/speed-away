@@ -5,18 +5,24 @@
     <script type="text/javascript" src="Starfish.js"></script>
     <script type="text/javascript" src="Main.js"></script>
     <style type="text/css">
-      body { font-family: Arial,Helvetica,sans-serif; background-color: #DDD;}
+      body {
+        font-family: Arial,Helvetica,sans-serif;
+        background-color: #DDD;
+      }
       canvas {
         border: 1px dotted black;
       }
       #game {
         margin: auto;
-        width: 605px;
+        width: 678px;
+        height: 404px;
+        background: url('img/forest.png') no-repeat;
+        padding: 26px 24px;
       }
     </style>
   </head>
   <body>
-    <span id="span_fps"></span> FPS<br />
+    <span id="span_fps"></span> FPS
     <span id="debug"></span><br />
     <div id="game">
     <canvas id="canvas" width="673" height="402">
