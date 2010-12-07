@@ -2,7 +2,7 @@
 var LevelView = function() {
   this.squareSize = 34; // px
   this.lineWidth = 2; // px
-  this.strokeStyle = '#555';
+  this.strokeStyle = '#020';
 
   this.level = null; // Modèle
 
@@ -53,8 +53,10 @@ LevelView.prototype.initLevelView = function(x, y, z) {
       );
 
       if(this.level.hasLeftWall(i, j)) { // Lignes verticales
-        if(this.level.isLeftStateFixed(i, j))
-          this.verticalWalls[j][i].strokeStyle = '#00F';
+        if(i == 0 || i == this.level.width - 1)
+          this.verticalWalls[j][i].strokeStyle = 'transparent';
+        else if(this.level.isLeftStateFixed(i, j))
+          this.verticalWalls[j][i].strokeStyle = '#FFF';
         this.verticalWalls[j][i].show();
       }
       else
@@ -71,8 +73,10 @@ LevelView.prototype.initLevelView = function(x, y, z) {
       );
 
       if(this.level.hasTopWall(i, j)) { // Lignes horizontales
-        if(this.level.isTopStateFixed(i, j))
-          this.horizontalWalls[j][i].strokeStyle = '#00F';
+        if(j == 0 || j == this.level.height - 1)
+          this.horizontalWalls[j][i].strokeStyle = 'transparent';
+        else if(this.level.isTopStateFixed(i, j))
+          this.horizontalWalls[j][i].strokeStyle = '#FFF';
         this.horizontalWalls[j][i].show();
       }
       else
