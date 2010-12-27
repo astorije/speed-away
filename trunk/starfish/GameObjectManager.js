@@ -155,3 +155,11 @@ GameObjectManager.prototype.keyUp = function(event) {
     if(this.gameObjects[i].keyUp)
       this.gameObjects[i].keyUp(event);
 }
+
+GameObjectManager.prototype.observe = function(observable, type, values) {
+  //if(observable instanceof GameObject)
+    for(var i=0; i<observable.gameObjectsToCreate.length; ++i) {
+      this.gameObjects.push(observable.gameObjectsToCreate[i]);
+      observable.gameObjectsToCreate.removeObject(observable.gameObjectsToCreate[i]);
+    }
+}

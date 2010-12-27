@@ -1,13 +1,15 @@
 var Collision = function() {}
 
 Collision.between = function(obj1, obj2) {
+  if(obj1 == null || obj2 == null) return false;
+
   if(obj1 instanceof Segment
   && obj2 instanceof Circle)
     return Collision.circleSegment(obj2, obj1);
 
   if(obj2 instanceof Segment
   && obj1 instanceof Circle)
-    return Collision.circleSegment(obj2, obj1);
+    return Collision.circleSegment(obj1, obj2);
 
   if(obj1 instanceof AARectangle
   && obj2 instanceof Circle)
@@ -20,6 +22,14 @@ Collision.between = function(obj1, obj2) {
   if(obj1 instanceof Circle
   && obj2 instanceof Circle)
     return Collision.circleCircle(obj1, obj2);
+
+  if(obj1 instanceof Point
+  && obj2 instanceof Circle)
+    return Collision.circlePoint(obj2, obj1);
+
+  if(obj2 instanceof Point
+  && obj1 instanceof Circle)
+    return Collision.circlePoint(obj1, obj2);
 
   throw 'Unknown collision between two types.';
 }
@@ -67,10 +77,10 @@ Collision.SegSeg = function (ab, op) {
 Collision.circleAARectangle = function(circle, rect) {
   if((rect.topLeft.x <= circle.center.x && circle.center.x <= rect.bottomRight.x
     && rect.topLeft.y <= circle.center.y && circle.center.y <= rect.bottomRight.y)
-  || Collision.circleSegment(circle, rect.topBorder)
-  || Collision.circleSegment(circle, rect.leftBorder)
-  || Collision.circleSegment(circle, rect.bottomBorder)
-  || Collision.circleSegment(circle, rect.rightBorder))
+  || Collision.between(circle, rect.topBorder)
+  || Collision.between(circle, rect.leftBorder)
+  || Collision.between(circle, rect.bottomBorder)
+  || Collision.between(circle, rect.rightBorder))
     return true;
   return false;
 }
@@ -88,9 +98,9 @@ Collision.circleSegment = function(circle, segment) {
   if (pscal1 >= 0 && pscal2 >= 0)
     return true; // I entre A et B, ok.
   // dernière possibilité, A ou B dans le cercle
-  if (Collision.circlePoint(circle, segment.a))
+  if (Collision.between(circle, segment.a))
     return true;
-  if (Collision.circlePoint(circle, segment.b))
+  if (Collision.between(circle, segment.b))
     return true;
   return false;
 }

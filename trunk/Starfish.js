@@ -10,6 +10,7 @@ Starfish.enabledClasses = {
   'AARectangle' : 'off',
   'GameObject' : 'off',
   'VisualGameObject' : 'off',
+  'ImageGameObject' : 'off',
   'AnimatedVisualGameObject' : 'off',
   'ShapeGameObject' : 'off',
   'RectangleShapeGameObject' : 'off',

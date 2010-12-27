@@ -15,25 +15,15 @@ var LevelView = function() {
   this.obstacles = null;
 }
 
-LevelView.prototype = new GameObject();
+LevelView.prototype = new VisualGameObject();
 
 LevelView.prototype.initLevelView = function(x, y, z) {
-  this.initGameObject(x, y, z);
+  this.initVisualGameObject(x, y, z);
 
-  this.obstacles = [];
+  this.obstacles = new Array();
 
   this.level = new Level().initLevel();
   this.level.addObserver(this);
-
- /*new RectangleShapeGameObject().initRectangleShapeGameObject(
-    this.x, this.y, this.z,
-    this.lineWidth,
-    this.strokeStyle,
-    null,
-    this.level.width * this.squareSize,
-    this.level.height * this.squareSize
-  );
-*/
 
   this.verticalWalls = [];
   this.horizontalWalls = [];
@@ -42,15 +32,16 @@ LevelView.prototype.initLevelView = function(x, y, z) {
     this.verticalWalls[j] = [];
     this.horizontalWalls[j] = [];
     for(var i=0; i<this.level.width; i++) {
-      this.verticalWalls[j][i] = new LineShapeGameObject().initLineShapeGameObject(
-        this.x + i*this.squareSize,
-        this.y + j*this.squareSize,
+      this.verticalWalls[j][i] = new LineShapeGameObject().setParent(this).initLineShapeGameObject(
+        i*this.squareSize,
+        j*this.squareSize,
         this.zOrder,
         this.lineWidth,
         this.strokeStyle,
-        this.x + i*this.squareSize,
-        this.y + (j+1)*this.squareSize
+        0,
+        this.squareSize
       );
+      //this.verticalWalls[j][i].setParent(this);
 
       if(this.level.hasLeftWall(i, j)) { // Lignes verticales
         if(i == 0 || i == this.level.width - 1)
@@ -62,15 +53,16 @@ LevelView.prototype.initLevelView = function(x, y, z) {
       else
         this.verticalWalls[j][i].hide();
 
-      this.horizontalWalls[j][i] = new LineShapeGameObject().initLineShapeGameObject(
-        this.x + i*this.squareSize,
-        this.y + j*this.squareSize,
+      this.horizontalWalls[j][i] = new LineShapeGameObject().setParent(this).initLineShapeGameObject(
+        i*this.squareSize,
+        j*this.squareSize,
         this.zOrder,
         this.lineWidth,
         this.strokeStyle,
-        this.x + (i+1)*this.squareSize,
-        this.y + j*this.squareSize
+        this.squareSize,
+        0
       );
+      //this.horizontalWalls[j][i].setParent(this);
 
       if(this.level.hasTopWall(i, j)) { // Lignes horizontales
         if(j == 0 || j == this.level.height - 1)
@@ -115,9 +107,6 @@ LevelView.prototype.update = function(delay, context, xScroll, yScroll) {
 
   for(var j=0; j<this.level.height; j++)
     for(var i=0; i<this.level.width; i++) {
-      this.horizontalWalls[j][i].update(delay, context, xScroll, yScroll);
-      this.verticalWalls[j][i].update(delay, context, xScroll, yScroll);
-
       if(this.horizontalWalls[j][i].slidingRatio == 1
       && this.horizontalWalls[j][i].strokeStyle == '#0F0')
         this.horizontalWalls[j][i].strokeStyle = this.strokeStyle;
@@ -128,22 +117,12 @@ LevelView.prototype.update = function(delay, context, xScroll, yScroll) {
     }
 }
 
-LevelView.prototype.draw = function(delay, context, xScroll, yScroll) {
-  for(var j=0; j<this.level.height; j++)
-    for(var i=0; i<this.level.width; i++) {
-      if(this.horizontalWalls[j][i] instanceof LineShapeGameObject)
-        this.horizontalWalls[j][i].draw(delay, context, xScroll, yScroll);
-      if(this.verticalWalls[j][i] instanceof LineShapeGameObject)
-        this.verticalWalls[j][i].draw(delay, context, xScroll, yScroll);
-    }
-}
-
 LevelView.prototype.getLevelColumn = function(x) {
-  return Math.floor((x - this.x) / this.squareSize);
+  return Math.floor((x - this.getX()) / this.squareSize);
 }
 
 LevelView.prototype.getLevelRow = function(y) {
-  return Math.floor((y - this.y) / this.squareSize);
+  return Math.floor((y - this.getY()) / this.squareSize);
 }
 
 LevelView.prototype.getTopWall = function(i, j) {
@@ -195,8 +174,13 @@ LevelView.prototype.obstacleAt = function(i, j) {
   return false;
 }
 
-LevelView.prototype.placeItem = function(item, i, j) {
-  item.x = this.x + (i+0.5)*this.squareSize - item.frameWidth/2;
-  item.y = this.y + (j+0.5)*this.squareSize - item.image.height/2;
-  item.updateBoundingBox();
+LevelView.prototype.loadObjectAt = function(object, i, j) {
+  if(this.obstacleAt(i, j))
+    return false;
+  if(object instanceof AnimatedVisualGameObject)
+    object.x = this.getX() + (i+0.5)*this.squareSize - object.frameWidth/2;
+  else
+    object.x = this.getX() + (i+0.5)*this.squareSize - object.image.width/2;
+  object.y = this.getY() + (j+0.5)*this.squareSize - object.image.height/2;
+  object.updateBoundingBox();
 }

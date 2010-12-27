@@ -90,8 +90,8 @@ AARectangle.prototype.calculatePoints = function (a, b) {
 
   this.calculateBorders();
 
-  this.width = this.topRight.x - this.topLeft.x;
-  this.height = this.bottomRight.y - this.bottomLeft.y;
+  this.width = this.bottomRight.x - this.topLeft.x;
+  this.height = this.bottomRight.y - this.topLeft.y;
 }
 
 AARectangle.prototype.calculatePointSizes = function(a, width, height) {

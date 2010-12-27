@@ -19,8 +19,10 @@ LineShapeGameObject.prototype.initLineShapeGameObject = function(x, y, z, lineWi
   this.toY = toY;
 
   this.boundingBox = new AARectangle().initAARectangle(
-    new Point().initPoint(this.x, this.y),
-    new Point().initPoint(this.toX, this.toY)
+    new Point().initPoint(this.getX(), this.getY()),
+    new Point().initPoint(
+      this.getX() + this.toX + (this.toX == 0)*(Math.max(0, this.lineWidth-1)),
+      this.getY() + this.toY + (this.toY == 0)*(Math.max(0, this.lineWidth-1)))
   );
 
   //this.updateBoudingBox();
@@ -43,14 +45,14 @@ LineShapeGameObject.prototype.update = function(delay, context, xScroll, yScroll
       this.slidingRatio = 1;
       this.slidingOn = false;
     }
-  this.updateBoudingBox();
+    this.updateBoudingBox();
   }
 }
 
 LineShapeGameObject.prototype.updateBoudingBox = function() {
   this.boundingBox.setBottomRightPoint(new Point().initPoint(
-    this.x + (this.toX - this.x)*this.slidingRatio + (this.x == this.toX)*(Math.max(0, this.lineWidth-1)),
-    this.y + (this.toY - this.y)*this.slidingRatio + (this.y == this.toY)*(Math.max(0, this.lineWidth-1))
+    this.getX() + this.toX * this.slidingRatio + (this.toX == 0)*(Math.max(0, this.lineWidth-1)),
+    this.getY() + this.toY * this.slidingRatio + (this.toY == 0)*(Math.max(0, this.lineWidth-1))
   ));
 }
 
@@ -59,10 +61,10 @@ LineShapeGameObject.prototype.draw = function(delay, context, xScroll, yScroll) 
   context.strokeStyle = this.strokeStyle;
 
   context.beginPath();
-  context.moveTo(this.x, this.y);
+  context.moveTo(this.getX(), this.getY());
   context.lineTo(
-    this.x + (this.toX - this.x) * this.slidingRatio,
-    this.y + (this.toY - this.y) * this.slidingRatio
+    this.getX() + this.toX * this.slidingRatio,
+    this.getY() + this.toY * this.slidingRatio
   );
   context.stroke();
   context.closePath();
