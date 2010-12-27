@@ -35,7 +35,7 @@ function AnimatedVisualGameObject() {
   this.boundingBox = null;
 }
 
-AnimatedVisualGameObject.prototype = new VisualGameObject;
+AnimatedVisualGameObject.prototype = new ImageGameObject;
 
 /**
  * Initialise et retourne l'objet
@@ -51,7 +51,7 @@ AnimatedVisualGameObject.prototype.initAnimatedVisualGameObject = function(x, y,
   if (frameCount <= 0) throw "framecount can not be <= 0";
   if (fps <= 0) throw "fps can not be <= 0"
 
-  this.initVisualGameObject(x, y, z, image);
+  this.initImageGameObject(x, y, z, image);
 
   this.currentFrame = 0;
   this.fps = fps;
@@ -94,6 +94,7 @@ AnimatedVisualGameObject.prototype.timeBetweenFrames = function() {
  */
 AnimatedVisualGameObject.prototype.draw = function(delay, context, xScroll, yScroll) {
   var sourceX = this.currentFrame * this.frameWidth;
+
   context.drawImage(this.image, sourceX, 0, this.frameWidth, this.image.height, this.x - xScroll, this.y - yScroll, this.frameWidth, this.image.height);
 
   this.timeBeforeNextFrame -= delay;

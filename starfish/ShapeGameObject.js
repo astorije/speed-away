@@ -4,10 +4,10 @@ var ShapeGameObject = function() {
   this.strokeStyle = null;
 }
 
-ShapeGameObject.prototype = new GameObject();
+ShapeGameObject.prototype = new VisualGameObject();
 
 ShapeGameObject.prototype.initShapeGameObject = function(x, y, z, lineWidth, strokeStyle, fillStyle) {
-  this.initGameObject(x, y, z);
+  this.initVisualGameObject(x, y, z);
 
   this.lineWidth = lineWidth;
   if(fillStyle)

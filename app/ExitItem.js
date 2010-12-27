@@ -1,12 +1,13 @@
 var ExitItem = function() {
+  this.observable = null;
 }
 
 ExitItem.prototype = new AnimatedVisualGameObject();
 
 ExitItem.prototype.initExitItem = function () {
-  var image = new Image();
-  image.src = 'img/depart.png';
-  this.initAnimatedVisualGameObject(30, 30, 0, image, 3, 3);
+  this.observable = new Observable().initObservable(this);
+
+  this.initAnimatedVisualGameObject(30, 30, 0, img_exit, 2, 2);
 
   return this;
 }

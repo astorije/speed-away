@@ -21,7 +21,7 @@ Observable.prototype.removeObserver = function(observer) {
 }
 
 Observable.prototype.notifyObservers = function(type, values) {
-  for(var i=0; i<this.observers.length; i++)
+  for(var i=0; i<this.observers.length; ++i)
     this.observers[i].observe(
       this.observable,
       type,

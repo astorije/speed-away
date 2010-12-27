@@ -21,10 +21,10 @@ var Ball = function() {
   this.radius = 12;
 }
 
-Ball.prototype = new VisualGameObject();
+Ball.prototype = new ImageGameObject();
 
-Ball.prototype.initBall = function(x, y, z, image, upKey, downKey, leftKey, rightKey) {
-  this.initVisualGameObject(x, y, z, image);
+Ball.prototype.initBall = function(z, image, upKey, downKey, leftKey, rightKey) {
+  this.initImageGameObject(0, 0, z, image);
   this.upKey = upKey;
   this.downKey = downKey;
   this.leftKey = leftKey;
@@ -130,8 +130,8 @@ Ball.prototype.update = function (dt, context, xScroll, yScroll) {
 }
 
 Ball.prototype.updateCenter = function() {
-  this.center.x = this.x + this.image.width / 2;
-  this.center.y = this.y + this.image.height / 2;
+  this.center.x = this.getX() + this.image.width / 2;
+  this.center.y = this.getY() + this.image.height / 2;
   this.updateBoundingBox();
 }
 Ball.prototype.updateBoundingBox = function() {
@@ -145,19 +145,15 @@ Ball.prototype.intersects = function(other) {
       i = casesUnder[k][0];
       j = casesUnder[k][1];
 
+      if(i < 0 || j < 0)
+        break;
+
       if(this.ySpeed <= 0 // Mur au-dessus
       && Collision.between(
         other.getTopWall(i, j).boundingBox.bottomBorder,
         this.boundingBox
       )) {
- /*       do {
-          this.y++;
-          this.updateCenter();
-        } while(Collision.between(
-          other.getTopWall(i, j).boundingBox.bottomBorder,
-          this.boundingBox
-        ));
-  */      this.bounceAroundNormal(
+        this.bounceAroundNormal(
           new Segment().initSegment(
             Collision.getShortestIntersection(
               this.center,
@@ -172,14 +168,7 @@ Ball.prototype.intersects = function(other) {
         other.getBottomWall(i, j).boundingBox.topBorder,
         this.boundingBox
       )) {
- /*       do {
-          this.y--;
-          this.updateCenter();
-        } while(Collision.between(
-          other.getBottomWall(i, j).boundingBox.topBorder,
-          this.boundingBox
-        ));
- */       this.bounceAroundNormal(
+        this.bounceAroundNormal(
           new Segment().initSegment(
             Collision.getShortestIntersection(
               this.center,
@@ -195,14 +184,7 @@ Ball.prototype.intersects = function(other) {
         other.getLeftWall(i, j).boundingBox.rightBorder,
         this.boundingBox
       )) {
- /*       do {
-          this.x++;
-          this.updateCenter();
-        } while(Collision.between(
-          other.getLeftWall(i, j).boundingBox.rightBorder,
-          this.boundingBox
-        ));
-  */      this.bounceAroundNormal(
+        this.bounceAroundNormal(
           new Segment().initSegment(
             Collision.getShortestIntersection(
               this.center,
@@ -217,14 +199,7 @@ Ball.prototype.intersects = function(other) {
         other.getRightWall(i, j).boundingBox.leftBorder,
         this.boundingBox
       )) {
-  /*      do {
-          this.x--;
-          this.updateCenter();
-        } while(Collision.between(
-          other.getRightWall(i, j).boundingBox.leftBorder,
-          this.boundingBox
-        ));
-   */     this.bounceAroundNormal(
+        this.bounceAroundNormal(
           new Segment().initSegment(
             Collision.getShortestIntersection(
               this.center,
@@ -244,8 +219,8 @@ Ball.prototype.intersects = function(other) {
 
       // Calcul de la base orthonormée (n,g)
       // n est perpendiculaire au plan de collision, g est tangent
-      var nx = (other.x - this.x)/(this.radius + other.radius);
-      var ny = (other.y - this.y)/(this.radius + other.radius);
+      var nx = (other.getX() - this.getX())/(this.radius + other.radius);
+      var ny = (other.getY() - this.getY())/(this.radius + other.radius);
       var gx = -ny;
       var gy = nx;
 
@@ -279,7 +254,14 @@ Ball.prototype.intersects = function(other) {
 
   else if(other instanceof ExitItem) {
     if(Collision.between(this.boundingBox, other.boundingBox)) {
-      alert("You Win!");
+      other.observable.notifyObservers();
+      other.destroyVisualGameObject();
+    }
+  }
+
+  else if(other instanceof MirrorItem) {
+    if(Collision.between(this.boundingBox, other.boundingBox)) {
+      other.observable.notifyObservers();
       other.destroyVisualGameObject();
     }
   }

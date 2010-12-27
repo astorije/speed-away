@@ -3,25 +3,11 @@
  * @abstract
  */
 var GameObject = function() {
-  /**
-   * Ordre de profondeur. Plus le chiffre est grand, plus l'objet est éloigné.
-   * @type Number
-   */
-  this.zOrder = 0;
-
-  /**
-   * Abscisse de l'objet
-   * @type Number
-   */
-  this.x = 0;
-
-  /**
-   * Ordonnée de l'objet
-   * @type Number
-   */
-  this.y = 0;
 
   this.collidingObjects = null;
+
+  //this.children = null;
+  this.parent = null;
 }
 
 /**
@@ -30,12 +16,12 @@ var GameObject = function() {
  * @param Number y Ordonnée de l'objet
  * @param Number z Profondeur de l'objet
  */
-GameObject.prototype.initGameObject = function(x, y, z) {
-  this.zOrder = z;
-  this.x = x;
-  this.y = y;
+GameObject.prototype.initGameObject = function() {
 
   this.collidingObjects = new Array();
+  //this.children = new Array();
+
+  GameObjectManager.instance.addGameObject(this);
 
   return this;
 }
@@ -47,4 +33,9 @@ GameObject.prototype.canCollideWith = function(object) {
 
 GameObject.prototype.destroyGameObject = function() {
   GameObjectManager.instance.removeGameObject(this);
+}
+
+GameObject.prototype.setParent = function(object) {
+  this.parent = object;
+  return this;
 }

@@ -7,6 +7,9 @@ var Segment = function() {
 }
 
 Segment.prototype.initSegment = function(a, b) {
+  if(a.x == b.x && a.y == b.y)
+    return null;
+
   this.a = a;
   this.b = b;
 
