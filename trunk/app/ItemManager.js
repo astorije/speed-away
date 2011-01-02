@@ -1,5 +1,5 @@
 var ItemManager = function() {
-  this.maxItems = 5;
+  this.maxItems = Config.maxItemNumber;
   this.itemClassNames = [
     MirrorItem
   ];
@@ -18,7 +18,10 @@ ItemManager.prototype.initItemManager = function(levelView, player1, player2) {
   this.initGameObject(0, 0, 0);
 
   this.runningItems = new Array();
-  this.timeBeforeNextItem = Math.intRandomBetween(1, 3);
+  this.timeBeforeNextItem = Math.intRandomBetween(
+    Config.minTimeBeforeNextItem,
+    Config.maxTimeBeforeNextItem
+  );
 
   this.levelView = levelView;
   this.player1 = player1;
@@ -29,18 +32,23 @@ ItemManager.prototype.initItemManager = function(levelView, player1, player2) {
   return this;
 }
 
-ItemManager.prototype.createGameObject = function(object) {
- // this.gameObjectsToCreate.push(object);
- // this.observable.notifyObservers();
-  return object;
-}
-
 ItemManager.prototype.update = function(delay, context, xScroll, yScroll) {
   this.timeBeforeNextItem -= delay;
   if(this.timeBeforeNextItem <= 0) {
-    this.timeBeforeNextItem = Math.intRandomBetween(4, 10);
+    this.timeBeforeNextItem = Math.intRandomBetween(
+      Config.minTimeBeforeNextItem,
+      Config.maxTimeBeforeNextItem
+    );
     if(this.runningItems.length < this.maxItems) {
-      var item = this.createGameObject(new MirrorItem().initMirrorItem());
+      switch(Math.intRandomBetween(0, 1)) {
+        case 0:
+          var item = new MirrorItem().initMirrorItem();
+          break;
+        case 1:
+          var item = new FasterItem().initFasterItem();
+          break;
+      }
+
       var good_position = false;
       while(!good_position) {
         good_position = true;
@@ -65,6 +73,8 @@ ItemManager.prototype.update = function(delay, context, xScroll, yScroll) {
 ItemManager.prototype.observe = function(observable, type, values) {
   if(observable instanceof MirrorItem) {
     this.runningItems.removeObject(observable);
-    observable.launchEffect(this.player1, this.player2);
+  }
+  else if(observable instanceof FasterItem) {
+    this.runningItems.removeObject(observable);
   }
 }

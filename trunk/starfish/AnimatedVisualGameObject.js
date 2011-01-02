@@ -33,6 +33,7 @@ function AnimatedVisualGameObject() {
   this.frameCount = 0;
 
   this.boundingBox = null;
+  this.hidden = false;
 }
 
 AnimatedVisualGameObject.prototype = new ImageGameObject;
@@ -93,6 +94,9 @@ AnimatedVisualGameObject.prototype.timeBetweenFrames = function() {
  * @param Number yScroll
  */
 AnimatedVisualGameObject.prototype.draw = function(delay, context, xScroll, yScroll) {
+  if(this.hidden)
+    return;
+
   var sourceX = this.currentFrame * this.frameWidth;
 
   context.drawImage(this.image, sourceX, 0, this.frameWidth, this.image.height, this.x - xScroll, this.y - yScroll, this.frameWidth, this.image.height);
@@ -103,4 +107,9 @@ AnimatedVisualGameObject.prototype.draw = function(delay, context, xScroll, yScr
     ++this.currentFrame;
     this.currentFrame %= this.frameCount;
   }
+}
+
+AnimatedVisualGameObject.prototype.hide = function() {
+  this.hidden = true;
+  this.boundingBox = null;
 }
