@@ -17,8 +17,12 @@ include('app/Ball.js');
 include('app/Level.js');
 include('app/LevelView.js');
 include('app/ExitItem.js');
+include('app/AbstractItem.js');
+include('app/FasterItem.js');
 include('app/MirrorItem.js');
 include('app/ItemManager.js');
+
+include('config.js');
 
 /**
  * Intervalle entre 2 images : 1000 / FPS
@@ -37,6 +41,9 @@ img_exit.src = 'img/exit.png';
 
 var img_mirror = new Image();
 img_mirror.src = 'img/mirror.png';
+
+var img_faster = new Image();
+img_faster.src = 'img/faster.png';
 
 // Démarrage de l'application
 window.onload = init;

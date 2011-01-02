@@ -21,6 +21,8 @@ var Ball = function() {
   this.radius = 12;
 }
 
+Ball.players = new Array();
+
 Ball.prototype = new ImageGameObject();
 
 Ball.prototype.initBall = function(z, image, upKey, downKey, leftKey, rightKey) {
@@ -34,6 +36,8 @@ Ball.prototype.initBall = function(z, image, upKey, downKey, leftKey, rightKey) 
   this.boundingBox = new Circle();
   this.boundingBox.radius = this.radius;
   this.updateCenter();
+
+  Ball.players.push(this);
 
   return this;
 }
@@ -254,15 +258,18 @@ Ball.prototype.intersects = function(other) {
 
   else if(other instanceof ExitItem) {
     if(Collision.between(this.boundingBox, other.boundingBox)) {
-      other.observable.notifyObservers();
+      other.observable.notifyObservers(this);
       other.destroyVisualGameObject();
     }
   }
 
-  else if(other instanceof MirrorItem) {
+  else if(other instanceof AbstractItem) {
     if(Collision.between(this.boundingBox, other.boundingBox)) {
+      other.hide();
+      other.catcher = this;
+      other.launchEffect();
       other.observable.notifyObservers();
-      other.destroyVisualGameObject();
+      //other.destroyVisualGameObject();
     }
   }
 

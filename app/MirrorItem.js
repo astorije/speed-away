@@ -1,27 +1,34 @@
 var MirrorItem = function() {
-  this.observable = null;
+  this.active = false;
+  this.duration = 2;
 }
 
-MirrorItem.prototype = new AnimatedVisualGameObject();
+MirrorItem.prototype = new AbstractItem();
 
 MirrorItem.prototype.initMirrorItem = function () {
-  this.initAnimatedVisualGameObject(30, 30, 0, img_mirror, 2, 2);
-
-  this.observable = new Observable().initObservable(this);
+  this.initAbstractItem(0, img_mirror, 2, 2);
 
   return this;
 }
 
-MirrorItem.prototype.launchEffect = function(player1, player2) {
-  var x_tmp = player1.x;
-  var y_tmp = player1.y;
+MirrorItem.prototype.activate = function() {
+  var x_previous = Ball.players[0].x;
+  var y_previous = Ball.players[0].y;
+  var x_current, y_current;
 
-  player1.x = player2.x;
-  player1.y = player2.y;
+  for(var i=1; i<Ball.players.length; ++i) {
+    x_current = Ball.players[i].x;
+    y_current = Ball.players[i].y;
 
-  player2.x = x_tmp;
-  player2.y = y_tmp;
+    Ball.players[i].x = x_previous;
+    Ball.players[i].y = y_previous;
+    Ball.players[i].updateCenter();
 
-  player1.updateCenter();
-  player2.updateCenter();
+    x_previous = x_current;
+    y_previous = y_current;
+  }
+
+  Ball.players[0].x = x_previous;
+  Ball.players[0].y = y_previous;
+  Ball.players[0].updateCenter();
 }
