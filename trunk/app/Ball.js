@@ -19,7 +19,7 @@ var Ball = function() {
 
   this.center = null;
   this.boundingBox = null;
-  this.radius = 12;
+  this.radius = 8;
 
   this.observable = null;
 }
@@ -146,6 +146,7 @@ Ball.prototype.updateCenter = function() {
 }
 Ball.prototype.updateBoundingBox = function() {
   this.boundingBox.center = this.center;
+  this.boundingBox.radius = this.radius;
 }
 
 Ball.prototype.intersects = function(other) {

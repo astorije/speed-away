@@ -21,14 +21,12 @@ body {
 
 #player1 h3 {
   background: url('img/ball_blue.png') no-repeat;
-  padding-left: 28px;
-  padding-top: 3px;
+  padding-left: 20px;
 }
 
 #player2 h3 {
   background: url('img/ball_red.png') no-repeat 100% 0;
-  padding-right: 28px;
-  padding-top: 3px;
+  padding-right: 20px;
 }
 
 
