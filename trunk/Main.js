@@ -52,10 +52,6 @@ img_faster.src = 'img/faster.png';
 
 function startGame() {
   var soundManager = new SoundManager().initSoundManager();
-  soundManager.playSound('music', 0.2);
-  soundManager.setLoop('music');
-  soundManager.playSoundWhenObserve('ball_wall', 'wallCollided');
-  soundManager.playSoundWhenObserve('ball_ball', 'ballCollided');
 
   var gameObjectManager = new GameObjectManager().initGameObjectManager();
 
@@ -103,5 +99,10 @@ function startGame() {
 
   player1.canCollideWith(exit);
   player2.canCollideWith(exit);
+
+  //soundManager.playSound('music', 0.2);
+  soundManager.setLoop('music');
+  soundManager.playSoundWhenObserve('ball_wall', 'wallCollided');
+  soundManager.playSoundWhenObserve('ball_ball', 'ballCollided');
 }
 

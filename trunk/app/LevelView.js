@@ -182,5 +182,7 @@ LevelView.prototype.loadObjectAt = function(object, i, j) {
   else
     object.x = this.getX() + (i+0.5)*this.squareSize - object.image.width/2;
   object.y = this.getY() + (j+0.5)*this.squareSize - object.image.height/2;
+  if(object.updateCenter)
+    object.updateCenter();
   object.updateBoundingBox();
 }
