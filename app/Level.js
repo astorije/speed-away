@@ -32,7 +32,7 @@ Level.prototype.initLevel = function() {
 }
 
 Level.prototype.loadLevel = function() {
-  var level_index = Math.intRandomBetween(0, Levels.length);
+  var level_index = Math.intRandomBetween(0, Levels.length-1);
   this.walls = Levels[level_index].walls;
   this.origins = Levels[level_index].origins;
 }
