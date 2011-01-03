@@ -12,6 +12,9 @@ Starfish.enable('Keyboard');
 Starfish.enable('Observable');
 Starfish.load();
 
+include('app/Config.js');
+include('app/Levels.js');
+
 include('app/GameIO.js');
 include('app/Ball.js');
 include('app/Level.js');
@@ -22,7 +25,6 @@ include('app/FasterItem.js');
 include('app/MirrorItem.js');
 include('app/ItemManager.js');
 
-include('config.js');
 
 /**
  * Intervalle entre 2 images : 1000 / FPS
@@ -52,17 +54,21 @@ function startGame() {
   var gameObjectManager = new GameObjectManager().initGameObjectManager();
 
   var player1 = new Ball().initBall(1, 'player1', img_ball_blue, Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT);
-  //gameObjectManager.addGameObject(player1);
 
   var player2 = new Ball().initBall(1, 'player2', img_ball_red, Keyboard.Z, Keyboard.S, Keyboard.Q, Keyboard.D);
-  //gameObjectManager.addGameObject(player2);
 
   var levelView = new LevelView().initLevelView(1, 1, 2);
-  //gameObjectManager.addGameObject(levelView);
 
-  levelView.loadObjectAt(player1, 1, 1);
-  //levelView.loadObjectAt(player2, 9, 7);
-  levelView.loadObjectAt(player2, 18, 0);
+  levelView.loadObjectAt(
+    player1,
+    levelView.level.origins.player1.x,
+    levelView.level.origins.player1.y
+  );
+  levelView.loadObjectAt(
+    player2,
+    levelView.level.origins.player2.x,
+    levelView.level.origins.player2.y
+  );
 
   levelView.canCollideWith(player1);
   levelView.canCollideWith(player2);
@@ -73,14 +79,15 @@ function startGame() {
   player1.canCollideWith(player2);
 
   var itemManager = new ItemManager().initItemManager(levelView, player1, player2);
-//  gameObjectManager.addGameObject(itemManager);
- // itemManager.observable.addObserver(gameObjectManager);
   itemManager.canCollideWith(player1);
   itemManager.canCollideWith(player2);
 
   var exit = new ExitItem().initExitItem();
-  levelView.loadObjectAt(exit, 9, 5);
- // gameObjectManager.addGameObject(exit);
+  levelView.loadObjectAt(
+    exit,
+    levelView.level.origins.exit.x,
+    levelView.level.origins.exit.y
+  );
 
   var gameIO = GameIO.getInstance();
 
