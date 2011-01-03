@@ -35,7 +35,6 @@ SoundManager.prototype.playSoundWhenObserve = function(soundId, event) {
 }
 
 SoundManager.prototype.observe = function(observable, type, values) {
-  console.log(type);
   if(type !== null && this.playableEvents[type] !== undefined)
     this.playSound(this.playableEvents[type]);
 }
