@@ -46,9 +46,9 @@ var img_faster = new Image();
 img_faster.src = 'img/faster.png';
 
 // Démarrage de l'application
-window.onload = init;
+//window.onload = init;
 
-function init() {
+function startGame() {
   var gameObjectManager = new GameObjectManager().initGameObjectManager();
 
   var player1 = new Ball().initBall(1, 'player1', img_ball_blue, Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT);
@@ -61,8 +61,8 @@ function init() {
   //gameObjectManager.addGameObject(levelView);
 
   levelView.loadObjectAt(player1, 1, 1);
-  levelView.loadObjectAt(player2, 9, 7);
-  //levelView.loadObjectAt(player2, 18, 0);
+  //levelView.loadObjectAt(player2, 9, 7);
+  levelView.loadObjectAt(player2, 18, 0);
 
   levelView.canCollideWith(player1);
   levelView.canCollideWith(player2);

@@ -3,6 +3,10 @@ body {
   background: url('img/bg_forest.png');
 }
 
+#canvas {
+  display: none;
+}
+
 #game_box {
   text-align: center;
   margin: auto;
@@ -34,17 +38,17 @@ img {
 }
 
 #player1, #player2 {
-  width: 495px;
-  height: 286px;
+  width: 496px;
+  height: 292px;
   background: url('img/player1_box.png') no-repeat;
   padding: 40px;
+  padding-right: 46px;
+  padding-top: 67px;
   position: absolute;
 }
 #player1 {
   border: 0px solid green;
   background: url('img/player1_box.png') no-repeat;
-  padding-left: 49px;
-  padding-top: 72px;
   left: 0;
   text-align: left;
 }
@@ -52,8 +56,6 @@ img {
 #player2 {
   border: 0px solid red;
   background: url('img/player2_box.png') no-repeat;
-  padding-right: 48px;
-  padding-top: 68px;
   right: 0;
   text-align: right;
 }
@@ -113,4 +115,22 @@ img {
   background-image: -moz-linear-gradient(top, #204C07, #099721);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#204C07), to(#099721));
   opacity: 0.8;
+}
+
+a#play_button {
+  display: block;
+  background: url('img/play_button.png') no-repeat;
+  width: 237px;
+  height: 101px;
+  margin: auto;
+  margin-top: 139px;
+}
+
+a.replay_button {
+  display: block;
+  background: url('img/replay_button.png') no-repeat;
+  width: 130px;
+  height: 47px;
+  margin: auto;
+  margin-top: 40px;
 }

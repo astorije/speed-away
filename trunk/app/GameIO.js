@@ -12,6 +12,10 @@ GameIO.prototype.initGameIO = function() {
   return this;
 }
 
+GameIO.prototype.startGame = function() {
+  startGame();
+}
+
 GameIO.prototype.observe = function(observable, type, values) {
   if(observable instanceof ExitItem) {
     if(observable.catcher.name == 'player1')
