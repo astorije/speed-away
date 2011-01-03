@@ -23,7 +23,9 @@ include('app/LevelView.js');
 include('app/AbstractItem.js');
 include('app/ExitItem.js');
 include('app/FasterItem.js');
+include('app/SlowerItem.js');
 include('app/MirrorItem.js');
+include('app/SwitchItem.js');
 include('app/ItemManager.js');
 
 /**
@@ -44,8 +46,14 @@ img_exit.src = 'img/exit.png';
 var img_mirror = new Image();
 img_mirror.src = 'img/mirror.png';
 
+var img_switch = new Image();
+img_switch.src = 'img/switch.png';
+
 var img_faster = new Image();
 img_faster.src = 'img/faster.png';
+
+var img_slower = new Image();
+img_slower.src = 'img/slower.png';
 
 // Démarrage de l'application
 //window.onload = init;

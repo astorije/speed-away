@@ -1,5 +1,4 @@
 var FasterItem = function() {
-  this.active = false;
   this.duration = 5;
 }
 
@@ -17,5 +16,5 @@ FasterItem.prototype.activate = function() {
 }
 
 FasterItem.prototype.deactivate = function() {
-  this.catcher.xSpeed /= 4;
+  this.catcher.maxSpeed /= 4;
 }
