@@ -12,9 +12,9 @@ FasterItem.prototype.initFasterItem = function () {
 
 FasterItem.prototype.activate = function() {
   this.targets.push(this.catcher);
-  this.catcher.maxSpeed *= 4;
+  this.catcher.maxSpeed *= 2;
 }
 
 FasterItem.prototype.deactivate = function() {
-  this.catcher.maxSpeed /= 4;
+  this.catcher.maxSpeed /= 2;
 }

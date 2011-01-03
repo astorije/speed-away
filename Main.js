@@ -26,6 +26,7 @@ include('app/FasterItem.js');
 include('app/SlowerItem.js');
 include('app/MirrorItem.js');
 include('app/SwitchItem.js');
+include('app/PowerItem.js');
 include('app/ItemManager.js');
 
 /**
@@ -39,6 +40,12 @@ img_ball_blue.src = "img/ball_blue.png";
 
 var img_ball_red = new Image();
 img_ball_red.src = "img/ball_red.png";
+
+var img_big_ball_blue = new Image();
+img_big_ball_blue.src = "img/big_ball_blue.png";
+
+var img_big_ball_red = new Image();
+img_big_ball_red.src = "img/big_ball_red.png";
 
 var img_exit = new Image();
 img_exit.src = 'img/exit.png';
@@ -54,6 +61,9 @@ img_faster.src = 'img/faster.png';
 
 var img_slower = new Image();
 img_slower.src = 'img/slower.png';
+
+var img_power = new Image();
+img_power.src = 'img/power.png';
 
 // Démarrage de l'application
 //window.onload = init;

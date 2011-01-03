@@ -36,7 +36,7 @@ ItemManager.prototype.update = function(delay, context, xScroll, yScroll) {
       Config.maxTimeBeforeNextItem
     );
     if(this.runningItems.length < this.maxItems) {
-      switch(Math.intRandomBetween(0, 3)) {
+      switch(Math.intRandomBetween(0, 4)) {
         case 0:
           var item = new SwitchItem().initSwitchItem();
           break;
@@ -48,6 +48,9 @@ ItemManager.prototype.update = function(delay, context, xScroll, yScroll) {
           break;
         case 3:
           var item = new MirrorItem().initMirrorItem();
+          break;
+        case 4:
+          var item = new PowerItem().initPowerItem();
           break;
       }
 
