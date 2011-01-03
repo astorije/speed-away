@@ -1,8 +1,6 @@
 var ItemManager = function() {
   this.maxItems = Config.maxItemNumber;
-  this.itemClassNames = [
-    MirrorItem
-  ];
+
   this.runningItems = null;
   this.levelView = null;
 
@@ -26,8 +24,6 @@ ItemManager.prototype.initItemManager = function(levelView, player1, player2) {
   this.levelView = levelView;
   this.player1 = player1;
   this.player2 = player2;
- // this.observable = new Observable().initObservable(this);
- // this.gameObjectsToCreate = new Array();
 
   return this;
 }
@@ -40,12 +36,18 @@ ItemManager.prototype.update = function(delay, context, xScroll, yScroll) {
       Config.maxTimeBeforeNextItem
     );
     if(this.runningItems.length < this.maxItems) {
-      switch(Math.intRandomBetween(0, 1)) {
+      switch(Math.intRandomBetween(0, 3)) {
         case 0:
-          var item = new MirrorItem().initMirrorItem();
+          var item = new SwitchItem().initSwitchItem();
           break;
         case 1:
           var item = new FasterItem().initFasterItem();
+          break;
+        case 2:
+          var item = new SlowerItem().initSlowerItem();
+          break;
+        case 3:
+          var item = new MirrorItem().initMirrorItem();
           break;
       }
 
