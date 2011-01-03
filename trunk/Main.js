@@ -10,6 +10,7 @@ Starfish.enable(['ShapeGameObject', 'RectangleShapeGameObject', 'LineShapeGameOb
 Starfish.enable('GameObjectManager');
 Starfish.enable('Keyboard');
 Starfish.enable('Observable');
+Starfish.enable('SoundManager');
 Starfish.load();
 
 include('app/Config.js');
@@ -24,7 +25,6 @@ include('app/ExitItem.js');
 include('app/FasterItem.js');
 include('app/MirrorItem.js');
 include('app/ItemManager.js');
-
 
 /**
  * Intervalle entre 2 images : 1000 / FPS
@@ -51,11 +51,19 @@ img_faster.src = 'img/faster.png';
 //window.onload = init;
 
 function startGame() {
+  var soundManager = new SoundManager().initSoundManager();
+  soundManager.playSound('music', 0.2);
+  soundManager.setLoop('music');
+  soundManager.playSoundWhenObserve('ball_wall', 'wallCollided');
+  soundManager.playSoundWhenObserve('ball_ball', 'ballCollided');
+
   var gameObjectManager = new GameObjectManager().initGameObjectManager();
 
   var player1 = new Ball().initBall(1, 'player1', img_ball_blue, Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT);
+  player1.observable.addObserver(soundManager);
 
   var player2 = new Ball().initBall(1, 'player2', img_ball_red, Keyboard.Z, Keyboard.S, Keyboard.Q, Keyboard.D);
+  player2.observable.addObserver(soundManager);
 
   var levelView = new LevelView().initLevelView(1, 1, 2);
 

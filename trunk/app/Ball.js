@@ -20,6 +20,8 @@ var Ball = function() {
   this.center = null;
   this.boundingBox = null;
   this.radius = 12;
+
+  this.observable = null;
 }
 
 Ball.players = new Array();
@@ -33,6 +35,8 @@ Ball.prototype.initBall = function(z, name, image, upKey, downKey, leftKey, righ
   this.downKey = downKey;
   this.leftKey = leftKey;
   this.rightKey = rightKey;
+
+  this.observable = new Observable().initObservable();
 
   this.center = new Point();
   this.boundingBox = new Circle();
@@ -167,6 +171,7 @@ Ball.prototype.intersects = function(other) {
             ),
             this.center
         ));
+        this.observable.notifyObservers('wallCollided');
         return true;
       }
       else if(this.ySpeed > 0 // Mur au-dessous
@@ -182,6 +187,7 @@ Ball.prototype.intersects = function(other) {
             ),
             this.center
         ));
+        this.observable.notifyObservers('wallCollided');
         return true;
       }
 
@@ -198,6 +204,7 @@ Ball.prototype.intersects = function(other) {
             ),
             this.center
         ));
+        this.observable.notifyObservers('wallCollided');
         return true;
       }
       else if(this.xSpeed > 0 // Mur à droite
@@ -213,6 +220,7 @@ Ball.prototype.intersects = function(other) {
             ),
             this.center
         ));
+        this.observable.notifyObservers('wallCollided');
         return true;
       }
     }
@@ -222,6 +230,7 @@ Ball.prototype.intersects = function(other) {
 
   else if(other instanceof Ball) {
     if(Collision.between(this.boundingBox, other.boundingBox)) {
+      this.observable.notifyObservers('ballCollided');
 
       // Calcul de la base orthonormée (n,g)
       // n est perpendiculaire au plan de collision, g est tangent

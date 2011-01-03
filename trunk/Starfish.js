@@ -20,6 +20,7 @@ Starfish.enabledClasses = {
   'GameObjectManager' : 'off',
   'Keyboard' : 'off',
   'Observable' : 'off',
+  'SoundManager' : 'off',
 };
 
 Starfish.load = function() {
