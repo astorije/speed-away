@@ -2,8 +2,10 @@ var AbstractItem = function() {
   this.observable = null;
   this.catcher = null;
 
-  this.active = null;
-  this.duration = null;
+  this.active = false;
+  this.duration = 0;
+
+  this.targets = null;
 }
 
 AbstractItem.prototype = new AnimatedVisualGameObject();
@@ -12,6 +14,7 @@ AbstractItem.prototype.initAbstractItem = function (z, image, frameCount, fps) {
   this.initAnimatedVisualGameObject(0, 0, z, image, frameCount, fps);
 
   this.observable = new Observable().initObservable(this);
+  this.targets = new Array();
 
   return this;
 }
@@ -28,10 +31,8 @@ AbstractItem.prototype.update = function (dt, context, xScroll, yScroll) {
     this.duration -= dt;
 
     if(this.duration <= 0) {
-      if(this.deactivate) {
+      if(this.deactivate)
         this.deactivate();
-        this.observable.notifyObservers("deactivated");
-      }
       this.active = false;
     }
   }

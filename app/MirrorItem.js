@@ -1,6 +1,5 @@
 var MirrorItem = function() {
   this.active = false;
-  this.duration = 2;
 }
 
 MirrorItem.prototype = new AbstractItem();
@@ -12,6 +11,8 @@ MirrorItem.prototype.initMirrorItem = function () {
 }
 
 MirrorItem.prototype.activate = function() {
+  this.targets = Ball.players;
+
   var x_previous = Ball.players[0].x;
   var y_previous = Ball.players[0].y;
   var x_current, y_current;

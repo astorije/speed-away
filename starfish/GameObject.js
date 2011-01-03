@@ -21,7 +21,8 @@ GameObject.prototype.initGameObject = function() {
   this.collidingObjects = new Array();
   //this.children = new Array();
 
-  GameObjectManager.instance.addGameObject(this);
+  if (typeof GameObjectManager === 'function')
+    GameObjectManager.instance.addGameObject(this);
 
   return this;
 }

@@ -16,8 +16,8 @@ include('app/GameIO.js');
 include('app/Ball.js');
 include('app/Level.js');
 include('app/LevelView.js');
-include('app/ExitItem.js');
 include('app/AbstractItem.js');
+include('app/ExitItem.js');
 include('app/FasterItem.js');
 include('app/MirrorItem.js');
 include('app/ItemManager.js');
@@ -51,17 +51,18 @@ window.onload = init;
 function init() {
   var gameObjectManager = new GameObjectManager().initGameObjectManager();
 
-  var player1 = new Ball().initBall(1, img_ball_blue, Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT);
+  var player1 = new Ball().initBall(1, 'player1', img_ball_blue, Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT);
   //gameObjectManager.addGameObject(player1);
 
-  var player2 = new Ball().initBall(1, img_ball_red, Keyboard.Z, Keyboard.S, Keyboard.Q, Keyboard.D);
+  var player2 = new Ball().initBall(1, 'player2', img_ball_red, Keyboard.Z, Keyboard.S, Keyboard.Q, Keyboard.D);
   //gameObjectManager.addGameObject(player2);
 
   var levelView = new LevelView().initLevelView(1, 1, 2);
   //gameObjectManager.addGameObject(levelView);
 
   levelView.loadObjectAt(player1, 1, 1);
-  levelView.loadObjectAt(player2, 18, 0);
+  levelView.loadObjectAt(player2, 9, 7);
+  //levelView.loadObjectAt(player2, 18, 0);
 
   levelView.canCollideWith(player1);
   levelView.canCollideWith(player2);
@@ -81,7 +82,7 @@ function init() {
   levelView.loadObjectAt(exit, 9, 5);
  // gameObjectManager.addGameObject(exit);
 
-  var gameIO = new GameIO().initGameIO();
+  var gameIO = GameIO.getInstance();
 
   exit.observable.addObserver(gameIO);
 

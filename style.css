@@ -1,0 +1,116 @@
+body {
+  font-family: 'Trebuchet MS', Verdana, Tahoma, sans-serif;
+  background: url('img/bg_forest.png');
+}
+
+#game_box {
+  text-align: center;
+  margin: auto;
+  width: 726px;
+  position: relative;
+}
+
+h3 {
+  margin: 0 5px;
+  border-bottom: 1px dotted black;
+}
+
+
+ul.items {
+  padding-left: 0;
+}
+ul.items li {
+  list-style: none;
+  padding: 3px;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.item_icon {
+  height: 24px;
+  width: 24px;
+}
+
+#player1, #player2 {
+  width: 495px;
+  height: 286px;
+  background: url('img/player1_box.png') no-repeat;
+  padding: 40px;
+  position: absolute;
+}
+#player1 {
+  border: 0px solid green;
+  background: url('img/player1_box.png') no-repeat;
+  padding-left: 49px;
+  padding-top: 72px;
+  left: 0;
+  text-align: left;
+}
+
+#player2 {
+  border: 0px solid red;
+  background: url('img/player2_box.png') no-repeat;
+  padding-right: 48px;
+  padding-top: 68px;
+  right: 0;
+  text-align: right;
+}
+
+#game {
+  border: 0px solid blue;
+  margin: auto;
+  width: 648px;
+  height: 378px;
+  background: url('img/forest.png') no-repeat;
+  padding: 39px;
+  position: absolute;
+}
+
+#player1 .item_icon {
+  float: left;
+}
+
+#player2 .item_icon {
+  float: right;
+}
+
+.outer_timer {
+  border: 1px solid #222;
+  height: 12px;
+  width: 48px;
+  opacity: 0.5;
+  margin: auto;
+  position: relative;
+  top: 6px;
+}
+.inner_timer {
+  background: #222;
+  height: 12px;
+  width: 100%;
+}
+
+#player1 .outer_timer {
+  margin-left: 32px;
+}
+
+#player2 .outer_timer {
+  margin-right: 32px;
+}
+
+.box {
+  display: none;
+  font-size: 1.2em;
+  margin: auto;
+  color: black;
+  width: 300px;
+  padding: 40px 10px;
+  background: #4A4;
+  text-align: center;
+  border: 1px solid #030;
+
+  background-image: -moz-linear-gradient(top, #204C07, #099721);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#204C07), to(#099721));
+  opacity: 0.8;
+}

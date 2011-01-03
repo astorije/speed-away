@@ -10,6 +10,7 @@ var Ball = function() {
   this.right = false;
   this.up = false;
   this.down = false;
+  this.name = null;
 
   this.upKey = null;
   this.downKey = null;
@@ -25,8 +26,9 @@ Ball.players = new Array();
 
 Ball.prototype = new ImageGameObject();
 
-Ball.prototype.initBall = function(z, image, upKey, downKey, leftKey, rightKey) {
+Ball.prototype.initBall = function(z, name, image, upKey, downKey, leftKey, rightKey) {
   this.initImageGameObject(0, 0, z, image);
+  this.name = name;
   this.upKey = upKey;
   this.downKey = downKey;
   this.leftKey = leftKey;
@@ -253,13 +255,6 @@ Ball.prototype.intersects = function(other) {
       other.ySpeed = ny*new_tSpeedN + gy*new_oSpeedG;
 
       return true;
-    }
-  }
-
-  else if(other instanceof ExitItem) {
-    if(Collision.between(this.boundingBox, other.boundingBox)) {
-      other.observable.notifyObservers(this);
-      other.destroyVisualGameObject();
     }
   }
 
