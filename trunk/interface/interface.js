@@ -5,13 +5,13 @@ $(document).ready(function(){
       // Affichage du bloc joueur gauche
       $('#player1').css('opacity', 0).animate({
         'opacity': 1,
-        'left': '-=150'
+        'left': '-=160'
       });
 
       // Affichage du bloc joueur droit
       $('#player2').css('opacity', 0).animate({
         'opacity': 1,
-        'right': '-=150'
+        'right': '-=160'
       });
 
       $('#canvas').fadeIn();

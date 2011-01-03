@@ -14,9 +14,21 @@ body {
   position: relative;
 }
 
-h3 {
+#player1 h3, #player2 h3 {
   margin: 0 5px;
   border-bottom: 1px dotted black;
+}
+
+#player1 h3 {
+  background: url('img/ball_blue.png') no-repeat;
+  padding-left: 28px;
+  padding-top: 3px;
+}
+
+#player2 h3 {
+  background: url('img/ball_red.png') no-repeat 100% 0;
+  padding-right: 28px;
+  padding-top: 3px;
 }
 
 
