@@ -27,7 +27,11 @@ SoundManager.prototype.playSound = function(soundId, volume) {
 }
 SoundManager.prototype.setLoop = function(soundId, volume) {
   if(this.sounds[soundId])
-    this.sounds[soundId].loop = true;
+    //this.sounds[soundId].loop = "loop"; // Ne fonctionne pas sous FF
+    this.sounds[soundId].addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.play();
+    }, false);
 }
 
 SoundManager.prototype.playSoundWhenObserve = function(soundId, event) {

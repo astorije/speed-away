@@ -11,9 +11,18 @@
   </head>
   <body>
     <div id="sounds">
-      <audio src="sounds/game.ogg" id="music"></audio>
-      <audio src="sounds/ball_wall.ogg" id="ball_wall"></audio>
-      <audio src="sounds/ball_ball.ogg" id="ball_ball"></audio>
+      <audio id="music">
+        <source src="sounds/game.ogg" type="audio/ogg" />
+        <source src="sounds/game.mp3" type="audio/mpeg" />
+      </audio>
+      <audio id="ball_wall">
+        <source src="sounds/ball_wall.ogg" type="audio/ogg" />
+        <source src="sounds/ball_wall.mp3" type="audio/mpeg" />
+      </audio>
+      <audio id="ball_ball">
+        <source src="sounds/ball_ball.ogg" type="audio/ogg" />
+        <source src="sounds/ball_ball.mp3" type="audio/mpeg" />
+      </audio>
     </div>
     <div id="game_box">
       <div id="player1">
