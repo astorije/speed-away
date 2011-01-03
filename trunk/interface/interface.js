@@ -30,7 +30,6 @@ $(document).ready(function(){
 });
 
 function itemHandler(item) {
-  console.log(item.targets);
   for(var i= 0; i<item.targets.length; ++i) {
     if(item.duration > 0) {
       $('<li><div style="background: url(\''+item.image.src+'\')" class="item_icon"></div><div class="outer_timer"><div class="inner_timer"></div></div></li>')
@@ -42,7 +41,7 @@ function itemHandler(item) {
           });
         });
     }
-    else {console.log('#'+item.targets[i].name+' ul.items');
+    else {
       $('<li><div style="background: url(\''+item.image.src+'\')" class="item_icon"></div></li>')
         .appendTo($('#'+item.targets[i].name+' ul.items'))
         .delay(1000).fadeOut(600, function() {
