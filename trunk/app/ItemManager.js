@@ -49,6 +49,8 @@ ItemManager.prototype.update = function(delay, context, xScroll, yScroll) {
           break;
       }
 
+      item.observable.addObserver(GameIO.getInstance());
+
       var good_position = false;
       while(!good_position) {
         good_position = true;

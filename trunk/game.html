@@ -2,79 +2,44 @@
 <html lang="fr">
   <head>
     <title>Speed Away!</title>
-    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="interface/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="interface/interface.js"></script>
     <script type="text/javascript" src="Starfish.js"></script>
     <script type="text/javascript" src="Main.js"></script>
-    <style type="text/css">
-      body {
-        font-family: Arial,Helvetica,sans-serif;
-        background-color: #DDD;
-      }
-      #game {
-        margin: auto;
-        width: 648px;
-        height: 378px;
-        background: url('img/forest.png') no-repeat;
-        padding: 39px;
-      }
-      #gamebox {
-        height: inherit;
-        width: inherit;
-        display: table-cell;
-        vertical-align: middle;
-        text-align: center;
-      }
-      .box {
-        font-family: 'Trebuchet MS', Verdana, Tahoma, sans-serif;
-        font-size: 1.2em;
-        margin: auto;
-        color: #030;
-        width: 300px;
-        padding: 40px 10px;
-        background: #4A4;
-        text-align: center;
-        border: 2px solid #030;
-        -moz-box-shadow: 0px 0px 300px 50px #030;
-        -webkit-box-shadow: 0px 0px 300px 50px #030;
-      }
-    </style>
-    <script type="text/javascript">
-      $(document).ready(function(){
 
-        $('.box').hide();
-
-        $('#span_fps').toggle(function() {
-          $('#canvas').hide(function() {
-            $('.box').fadeIn(100);
-          });
-        }, function() {
-          $('.box').fadeOut(300, function() {
-            $('#canvas').show();
-          });
-        });
-      });
-
-      var testJQ = function() {
-                  $('#canvas').hide(function() {
-            $('.box').fadeIn(100);
-          });
-      }
-    </script>
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
   </head>
   <body>
-    <span id="span_fps"></span> FPS
-    <span id="debug"></span><br />
-    <div id="game">
-      <div id="gamebox">
+    <div id="game_box">
+      <div id="player1">
+        <h3 class="title">
+          Joueur 1
+        </h3>
+        <ul class="items"></ul>
+      </div>
 
-        <div class="box">
-          Le joueur 1 remporte la partie !
-        </div>
-        <canvas id="canvas" width="648" height="378">
-          <p>
-            Your browser does not support the canvas element.
-          </p>
-        </canvas>
+      <div id="player2">
+        <h3 class="title">
+          Joueur 2
+        </h3>
+        <ul class="items"></ul>
+      </div>
+
+      <div id="game">
+          <canvas id="canvas" width="648" height="378">
+            <p>
+              Your browser does not support the canvas element.
+            </p>
+          </canvas>
+      </div>
+    </div>
+
+    <div id="overlays">
+      <div class="box" id="player1_wins">
+        Le joueur 1 remporte la partie !
+      </div>
+      <div class="box" id="player2_wins">
+        Le joueur 2 remporte la partie !
       </div>
     </div>
   </body>

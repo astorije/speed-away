@@ -1,5 +1,5 @@
 var Config = {
-  "maxItemNumber": 15,
-  "minTimeBeforeNextItem": 0.5,
-  "maxTimeBeforeNextItem": 1
+  "maxItemNumber": 10,
+  "minTimeBeforeNextItem": 1,
+  "maxTimeBeforeNextItem": 4
 };

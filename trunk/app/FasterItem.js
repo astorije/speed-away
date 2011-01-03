@@ -12,6 +12,7 @@ FasterItem.prototype.initFasterItem = function () {
 }
 
 FasterItem.prototype.activate = function() {
+  this.targets.push(this.catcher);
   this.catcher.maxSpeed *= 4;
 }
 

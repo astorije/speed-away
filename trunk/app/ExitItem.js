@@ -1,13 +1,16 @@
 var ExitItem = function() {
-  this.observable = null;
+  this.active = false;
+  this.duration = 0;
 }
 
-ExitItem.prototype = new AnimatedVisualGameObject();
+ExitItem.prototype = new AbstractItem();
 
 ExitItem.prototype.initExitItem = function () {
-  this.observable = new Observable().initObservable(this);
-
-  this.initAnimatedVisualGameObject(30, 30, 0, img_exit, 2, 2);
+  this.initAbstractItem(0, img_exit, 2, 2);
 
   return this;
+}
+
+ExitItem.prototype.activate = function() {
+  this.targets.push(this.catcher);
 }

@@ -119,6 +119,7 @@ GameObjectManager.prototype.draw = function() {
 
   this.context2D.drawImage(this.backBuffer, 0, 0);
 
+  /*
   // DEBUG
   if(document.getElementById('span_fps'))
     if(typeof this.debugFps == 'undefined' || this.debugFps < 0) {
@@ -126,6 +127,7 @@ GameObjectManager.prototype.draw = function() {
       this.debugFps = 0.5;
     }
     else this.debugFps -= delay;
+  */
 };
 
 GameObjectManager.prototype.addGameObject = function(gameObject) {
