@@ -73,10 +73,10 @@ function startGame() {
 
   var gameObjectManager = new GameObjectManager().initGameObjectManager();
 
-  var player1 = new Ball().initBall(1, 'player1', img_ball_blue, Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT);
+  var player1 = new Ball().initBall(1, 'player1', img_ball_blue, Keyboard.Z, Keyboard.S, Keyboard.Q, Keyboard.D);
   player1.observable.addObserver(soundManager);
 
-  var player2 = new Ball().initBall(1, 'player2', img_ball_red, Keyboard.Z, Keyboard.S, Keyboard.Q, Keyboard.D);
+  var player2 = new Ball().initBall(1, 'player2', img_ball_red, Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT);
   player2.observable.addObserver(soundManager);
 
   var levelView = new LevelView().initLevelView(1, 1, 2);
