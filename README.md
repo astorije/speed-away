@@ -6,7 +6,7 @@ It was developed for academic purposes at the Université de Technologie de Comp
 
 ## Usage
 
-Clone the repository and open `game.html` in your browser, or try it out at <https://goo.gl/040nd>.
+Clone the repository and open `game.html` in your browser, or try it out at <https://astorije.github.io/speed-away/>.
 
 ### Controls
 
