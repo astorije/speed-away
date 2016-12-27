@@ -7,7 +7,7 @@ module("Ball", {
     var image = new Image();
     image.height = 24;
     image.width = 24;
-    ball = new Ball().initBall(30, image, null, null, null, null);
+    ball = new Ball().initBall(30, 'ball1Name', image, null, null, null, null);
   }
 });
 
@@ -21,10 +21,7 @@ test('getCasesUnder()', 1, function() {
   deepEqual(
     ball.getCasesUnder(levelView),
     [
-      [0, 0],
-    /*  [1, 0],
-      [0, 1],
-      [1, 1]*/
+      [0, 0]
     ]
   );
 });
@@ -190,20 +187,20 @@ test('initLevelView()', 5, function() {
   ok(levelView.level.observable.observers.contains(levelView));
 });
 
-test('obstacleAt()', 4, function() {
+test('obstacleAt()', 7, function() {
   levelView.initLevelView(0, 0, 0);
   var image = new Image();
   image.width = 24;
   image.height = 24;
-  var b1 = new Ball().initBall(1, image, null, null, null, null)
+  var b1 = new Ball().initBall(1, 'ball2Name', image, null, null, null, null)
 
   levelView.canCollideWith(b1);
 
   ok(levelView.obstacleAt(0, 0));
-  /*ok(levelView.obstacleAt(0, 1));
-  ok(levelView.obstacleAt(1, 0));
-  ok(levelView.obstacleAt(1, 1));
-  */notOk(levelView.obstacleAt(0, 2));
+  notOk(levelView.obstacleAt(0, 1));
+  notOk(levelView.obstacleAt(1, 0));
+  notOk(levelView.obstacleAt(1, 1));
+  notOk(levelView.obstacleAt(0, 2));
   notOk(levelView.obstacleAt(2, 0));
   notOk(levelView.obstacleAt(2, 2));
 

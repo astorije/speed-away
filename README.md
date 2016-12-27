@@ -20,3 +20,7 @@ Clone the repository and open `game.html` in your browser, or try it out at <htt
 - **Mirror** ![Mirror icon](img/mirror.png): Each player controls the other player's marble
 - **Switch** ![Switch icon](img/switch.png): Switches both players on the map
 - **Power** ![Power icon](img/power.png): Your marble is bigger and heavier, pushing the enemy at contact
+
+## Testing
+
+This project comes with a set of tests running with [QUnit](https://qunitjs.com/). Open `test/index.html` in your browser or go to <https://astorije.github.io/speed-away/test/>.
